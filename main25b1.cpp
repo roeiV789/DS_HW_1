@@ -14,20 +14,26 @@
 using namespace std;
 
 void print(string cmd, StatusType res);
+
 void print(string cmd, output_t<int> res);
 
-int main()
-{
-    
+void run_unit_tests();
+
+int main() {
+#ifndef NDEBUG
+    run_unit_tests();
+    return 0;
+#endif
+
+
     int d1, d2;
 
     // Init
     DSpotify *obj = new DSpotify();
-    
+
     // Execute all commands in file
     string op;
-    while (cin >> op)
-    {
+    while (cin >> op) {
         if (!op.compare("add_playlist")) {
             cin >> d1;
             print(op, obj->add_playlist(d1));
@@ -63,7 +69,7 @@ int main()
             break;
         }
         // Verify no faults
-        if (cin.fail()){
+        if (cin.fail()) {
             cout << "Invalid input format" << endl;
             break;
         }
@@ -83,13 +89,11 @@ static const char *StatusTypeStr[] =
     "FAILURE"
 };
 
-void print(string cmd, StatusType res) 
-{
+void print(string cmd, StatusType res) {
     cout << cmd << ": " << StatusTypeStr[(int) res] << endl;
 }
 
-void print(string cmd, output_t<int> res)
-{
+void print(string cmd, output_t<int> res) {
     if (res.status() == StatusType::SUCCESS) {
         cout << cmd << ": " << StatusTypeStr[(int) res.status()] << ", " << res.ans() << endl;
     } else {
