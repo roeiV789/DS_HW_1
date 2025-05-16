@@ -1,16 +1,17 @@
 #pragma once
 using namespace std;
 
-template<class T>
+template<class T, class K>
 class AVLTree {
     struct Node {
         T data;
+        K key;
         int height;
         Node* father;
         Node *left;
         Node *right;
 
-        Node(const T &data) : data(data), height(1), father(nullptr), left(nullptr), right(nullptr) {
+        Node(const T &data, const K& key) : data(data), key(key), height(1), father(nullptr), left(nullptr), right(nullptr) {
         }
     };
 
@@ -34,8 +35,8 @@ public:
         if (head == nullptr) {
             return;
         }
-        deleteTree(root->left);
-        deleteTree(root->right);
+        deleteTree(head->left);
+        deleteTree(head->right);
         delete head;
     }
 
@@ -58,6 +59,22 @@ public:
     }
     int getRoot() const {
         return root;
+    }
+
+    T* search(const K& key) const{
+        return searchAux(root,key);
+    }
+    T* searchAux(Node* cur, const K& key) const {
+        if(cur == nullptr) {
+            return nullptr;
+        }
+        if(cur->key == key) {
+            return cur->data;
+        }
+        if(key < cur->key) {
+            return searchAux(cur->left, key);
+        }
+        return searchAux(cur->right, key);
     }
 
 };
