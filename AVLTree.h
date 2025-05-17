@@ -26,8 +26,6 @@ class AVLTree {
 
     Node *root;
 
-    int n;
-
 public:
     AVLTree();
 
@@ -48,7 +46,6 @@ public:
     int getBalance(Node *node) const;
 
     int getRoot() const;
-
 
     void toArray(K *array);
 
@@ -105,6 +102,24 @@ auto AVLTree<T, K>::insertAux(Node *node, const T &data, const K &key) -> Node *
     }
     updateHeight(node);
     return rebalance(node);
+}
+
+// as this function is primarily used for testing, it's ok to skip checking if the array is big enough
+template<class T, class K>
+void AVLTree<T, K>::toArray(K *array) {
+    toArrayAux(root, array, 0);
+}
+
+template<class T, class K>
+int AVLTree<T, K>::toArrayAux(Node *node, K *array, int index) {
+    if (node == nullptr) {
+        return index;
+    }
+    // Preorder traversal
+    array[index++] = node->key;
+    index = toArrayAux(node->left, array, index);
+    index = toArrayAux(node->right, array, index);
+    return index;
 }
 
 template<class T, class K>
@@ -178,6 +193,15 @@ typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRL(Node *b) {
 
 template<class T, class K>
 int AVLTree<T, K>::getBalance(Node *node) const {
+    if (node->left == nullptr && node->right == nullptr) {
+        return 0;
+    }
+    if (node->left == nullptr) {
+        return 0 - node->right->height;
+    }
+    if (node->right == nullptr) {
+        return node->right->height;
+    }
     return node->left->height - node->right->height;
 }
 
