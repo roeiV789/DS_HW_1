@@ -200,7 +200,7 @@ int AVLTree<T, K>::getBalance(Node *node) const {
         return 0 - node->right->height;
     }
     if (node->right == nullptr) {
-        return node->right->height;
+        return node->left->height;
     }
     return node->left->height - node->right->height;
 }
