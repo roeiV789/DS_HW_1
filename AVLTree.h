@@ -1,4 +1,6 @@
 #pragma once
+#include <algorithm>
+#include <cmath>
 
 template<class T, class K>
 class AVLTree {
@@ -61,7 +63,12 @@ AVLTree<T, K>::Node::Node(const T &data, const K &key)
 
 template<class T, class K>
 void AVLTree<T, K>::updateHeight(Node *node) {
-    node->height = 1 + max(node->left->height, node->right->height);
+    int currHeight = 0;
+    if (node->left != nullptr)
+        currHeight = node->left->height;
+    if (node->right != nullptr && node->right->height > currHeight)
+        currHeight = node->right->height;
+    node->height = 1 + currHeight;
 }
 
 
