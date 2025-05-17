@@ -12,6 +12,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(HW1
         main25b1.cpp wet1util.h unit_tests.cpp
-        AVLTree.h AVLTree.cpp
+        AVLTree.h
         dspotify25b1.h dspotify25b1.cpp
 )
