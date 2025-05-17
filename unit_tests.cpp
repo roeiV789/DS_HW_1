@@ -34,4 +34,18 @@ void avl_tree_test_1() {
     assert(arr2[2] == 3);
     assert(arr2[3] == -1);
     assert(arr2[4] == 1);
+
+
+    // insertions that trigger an RR rotation
+    tree.insert(DUMMY_DATA, 4);
+    tree.insert(DUMMY_DATA, 5);
+    int *arr3 = new int[7];
+    tree.toArray(arr3);
+    assert(arr3[0] == 2);
+    assert(arr3[1] == 0);
+    assert(arr3[2] == 4);
+    assert(arr3[3] == -1);
+    assert(arr3[4] == 1);
+    assert(arr3[5] == 3);
+    assert(arr3[6] == 5);
 }
