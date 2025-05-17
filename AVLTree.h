@@ -126,23 +126,23 @@ template<class T, class K>
 auto AVLTree<T, K>::rebalance(Node *node) -> Node * {
     int balance = getBalance(node);
 
+    // where is the problem?
     // Left
-    if (balance > 1)
+    if (balance > 1) {
         // Right
-        if (getBalance(node->left) < 0) {
+        if (getBalance(node->left) < 0)
             return rotateLR(node);
-            // else Left
-            return rotateLeft(node);
-        }
+        // or Left
+        return rotateRight(node);
+    }
 
     // Right
     if (balance < -1) {
         // Left
-        if (getBalance(node->right) > 0) {
+        if (getBalance(node->right) > 0)
             return rotateRL(node);
-            // else Right
-            return rotateRight(node);
-        }
+        // or Right
+        return rotateLeft(node);
     }
 
     return node;
@@ -177,12 +177,13 @@ auto AVLTree<T, K>::rotateLR(Node *b) -> Node * {
 
 template<class T, class K>
 typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateLeft(Node *b) {
-    Node *x = b->right;
-    b->right = x->left;
-    x->left = b;
-    updateHeight(x);
+    Node *a = b->right;
+    b->right = a->left;
+    a->left = b;
+    updateHeight(a);
     updateHeight(b);
-    return x;
+
+    return a;
 }
 
 template<class T, class K>
