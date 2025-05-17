@@ -18,9 +18,13 @@ class AVLTree {
 
     Node *insertAux(Node *node, const T &data, const K &key);
 
+    int toArrayAux(Node *node, K *array, int index);
+
     auto rebalance(Node *node) -> Node *;
 
     Node *root;
+
+    int n;
 
 public:
     AVLTree();
@@ -42,6 +46,9 @@ public:
     int getBalance(Node *node) const;
 
     int getRoot() const;
+
+
+    void toArray(K *array);
 
     T *search(const K &key) const;
 };
