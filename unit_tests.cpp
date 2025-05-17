@@ -48,4 +48,40 @@ void avl_tree_test_1() {
     assert(arr3[4] == 1);
     assert(arr3[5] == 3);
     assert(arr3[6] == 5);
+
+    // insertions that trigger a LR rotation
+    tree.insert(DUMMY_DATA, -3);
+    tree.insert(DUMMY_DATA, -2);
+    int *arr4 = new int[9];
+    tree.toArray(arr4);
+    assert(arr4[0] == 2);
+    assert(arr4[1] == 0);
+    assert(arr4[2] == 4);
+    assert(arr4[3] == -2);
+    assert(arr4[4] == 1);
+    assert(arr4[5] == 3);
+    assert(arr4[6] == 5);
+    assert(arr4[7] == -3);
+    assert(arr4[8] == -1);
+
+    // insertions that trigger a RL rotation
+    tree.insert(DUMMY_DATA, 7);
+    tree.insert(DUMMY_DATA, 6);
+    int *arr5 = new int[15];
+    tree.toArray(arr5);
+    assert(arr5[0] == 2);
+    assert(arr5[1] == 0);
+    assert(arr5[2] == 4);
+    assert(arr5[3] == -2);
+    assert(arr5[4] == 1);
+    assert(arr5[5] == 3);
+    assert(arr5[6] == 6);
+    assert(arr5[7] == -3);
+    assert(arr5[8] == -1);
+    assert(arr5[9] == 0);
+    assert(arr5[10] == 0);
+    assert(arr5[11] == 0);
+    assert(arr5[12] == 0);
+    assert(arr5[13] == 5);
+    assert(arr5[14] == 7);
 }
