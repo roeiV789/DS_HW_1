@@ -53,6 +53,23 @@ typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateLR(Node *b) {
 }
 
 template<class T, class K>
+typename AVLTree<T,K>::Node *AVLTree<T, K>::rotateLeft(Node *b) {
+    Node* x = b->right;
+    b->right = x->left;
+    x->left = b;
+    updateHeight(x);
+    updateHeight(b);
+    return x;
+}
+
+template<class T, class K>
+typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRL(Node *b) {
+    b->right = rotateRight(b->right);
+    return rotateLeft(b);
+}
+
+
+template<class T, class K>
 int AVLTree<T, K>::getBalance(Node *node) const {
     return node->left->height - node->right->height;
 }

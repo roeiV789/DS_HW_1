@@ -29,6 +29,10 @@ public:
 
     Node *rotateLR(Node *b);
 
+    Node *rotateLeft(Node *b);
+
+    Node *rotateRL(Node *b);
+
     int getBalance(Node *node) const;
 
     int getRoot() const;
