@@ -3,7 +3,7 @@
 Playlist::Playlist(int playlistId) : playlistId(playlistId), size(0){}
 
 Playlist::~Playlist() {
-    
+
 }
 
 int Playlist::getPlaylistId() const {
