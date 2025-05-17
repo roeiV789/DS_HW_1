@@ -32,11 +32,11 @@ public:
 
     void deleteTree(Node *head);
 
-    Node *rotateLeft(Node *b);
-
     Node *rotateRight(Node *b);
 
     Node *rotateLR(Node *b);
+
+    Node *rotateLeft(Node *b);
 
     Node *rotateRL(Node *b);
 

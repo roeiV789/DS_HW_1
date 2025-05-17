@@ -1,6 +1,5 @@
 #pragma once
 #include "AVLTree.h"
-
 #include <stdexcept>
 using namespace std;
 
@@ -89,18 +88,7 @@ void AVLTree<T, K>::deleteTree(Node *head) {
 }
 
 template<class T, class K>
-auto AVLTree<T, K>::rotateLeft(Node *b) -> Node * {
-    Node *a = b->right;
-    b->right = a->left;
-    a->left = b;
-    updateHeight(a);
-    updateHeight(b);
-
-    return a;
-}
-
-template<class T, class K>
-auto AVLTree<T, K>::rotateRight(Node *b) -> Node * {
+typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRight(Node *b) {
     Node *a = b->left;
     b->left = a->right;
     a->right = b;
@@ -117,7 +105,17 @@ auto AVLTree<T, K>::rotateLR(Node *b) -> Node * {
 }
 
 template<class T, class K>
-auto AVLTree<T, K>::rotateRL(Node *b) -> Node * {
+typename AVLTree<T,K>::Node *AVLTree<T, K>::rotateLeft(Node *b) {
+    Node* x = b->right;
+    b->right = x->left;
+    x->left = b;
+    updateHeight(x);
+    updateHeight(b);
+    return x;
+}
+
+template<class T, class K>
+typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRL(Node *b) {
     b->right = rotateRight(b->right);
     return rotateLeft(b);
 }
