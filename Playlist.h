@@ -1,4 +1,5 @@
 #pragma once
+using namespace std;
 #include "song.h"
 #include "PlaysKey.h"
 #include "AVLTree.h"
@@ -20,4 +21,11 @@ public:
     int getSize() const;
 
     void setSize(int size);
+
+    void addSong(const shared_ptr<Song>& song);
+
+    void removeSong(int songId);
+
+    bool isInPlaylist(int songId) const;
+
 };
