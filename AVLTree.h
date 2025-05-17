@@ -71,8 +71,7 @@ AVLTree<T, K>::AVLTree() : root(nullptr) {
 
 template<class T, class K>
 AVLTree<T, K>::~AVLTree() {
-    AVLTree *temp = root;
-    deleteTree(temp);
+    deleteTree(root);
     root = nullptr;
 }
 
