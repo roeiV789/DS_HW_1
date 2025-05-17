@@ -26,8 +26,6 @@ class AVLTree {
 
     Node *root;
 
-    int n;
-
 public:
     AVLTree();
 
@@ -48,7 +46,6 @@ public:
     int getBalance(Node *node) const;
 
     int getRoot() const;
-
 
     void toArray(K *array);
 
@@ -107,27 +104,45 @@ auto AVLTree<T, K>::insertAux(Node *node, const T &data, const K &key) -> Node *
     return rebalance(node);
 }
 
+// as this function is primarily used for testing, it's ok to skip checking if the array is big enough
+template<class T, class K>
+void AVLTree<T, K>::toArray(K *array) {
+    toArrayAux(root, array, 0);
+}
+
+template<class T, class K>
+int AVLTree<T, K>::toArrayAux(Node *node, K *array, int index) {
+    if (node == nullptr) {
+        return index;
+    }
+    // Preorder traversal
+    array[index++] = node->key;
+    index = toArrayAux(node->left, array, index);
+    index = toArrayAux(node->right, array, index);
+    return index;
+}
+
 template<class T, class K>
 auto AVLTree<T, K>::rebalance(Node *node) -> Node * {
     int balance = getBalance(node);
 
+    // where is the problem?
     // Left
-    if (balance > 1)
+    if (balance > 1) {
         // Right
-        if (getBalance(node->left) < 0) {
+        if (getBalance(node->left) < 0)
             return rotateLR(node);
-            // else Left
-            return rotateLeft(node);
-        }
+        // or Left
+        return rotateRight(node);
+    }
 
     // Right
     if (balance < -1) {
         // Left
-        if (getBalance(node->right) > 0) {
+        if (getBalance(node->right) > 0)
             return rotateRL(node);
-            // else Right
-            return rotateRight(node);
-        }
+        // or Right
+        return rotateLeft(node);
     }
 
     return node;
@@ -162,12 +177,13 @@ auto AVLTree<T, K>::rotateLR(Node *b) -> Node * {
 
 template<class T, class K>
 typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateLeft(Node *b) {
-    Node *x = b->right;
-    b->right = x->left;
-    x->left = b;
-    updateHeight(x);
+    Node *a = b->right;
+    b->right = a->left;
+    a->left = b;
+    updateHeight(a);
     updateHeight(b);
-    return x;
+
+    return a;
 }
 
 template<class T, class K>
@@ -178,6 +194,15 @@ typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRL(Node *b) {
 
 template<class T, class K>
 int AVLTree<T, K>::getBalance(Node *node) const {
+    if (node->left == nullptr && node->right == nullptr) {
+        return 0;
+    }
+    if (node->left == nullptr) {
+        return 0 - node->right->height;
+    }
+    if (node->right == nullptr) {
+        return node->left->height;
+    }
     return node->left->height - node->right->height;
 }
 
