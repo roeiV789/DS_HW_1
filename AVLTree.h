@@ -194,16 +194,12 @@ typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRL(Node *b) {
 
 template<class T, class K>
 int AVLTree<T, K>::getBalance(Node *node) const {
-    if (node->left == nullptr && node->right == nullptr) {
+    if (node == nullptr) {
         return 0;
     }
-    if (node->left == nullptr) {
-        return 0 - node->right->height;
-    }
-    if (node->right == nullptr) {
-        return node->left->height;
-    }
-    return node->left->height - node->right->height;
+    int leftHeight = (node->left != nullptr) ? node->left->height : 0;
+    int rightHeight = (node->right != nullptr) ? node->right->height : 0;
+    return leftHeight - rightHeight;
 }
 
 template<class T, class K>
