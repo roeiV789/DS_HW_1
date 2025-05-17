@@ -1,10 +1,12 @@
 #pragma once
 #include "AVLTree.h"
+
+#include <stdexcept>
 using namespace std;
 
 template<class T, class K>
 AVLTree<T, K>::Node::Node(const T &data, const K &key)
-    : data(data), key(key), height(1), father(nullptr), left(nullptr),
+    : data(data), key(key), height(1), left(nullptr),
       right(nullptr) {
 }
 
@@ -26,6 +28,57 @@ AVLTree<T, K>::~AVLTree() {
 }
 
 template<class T, class K>
+void AVLTree<T, K>::insert(const T &data, const K &key) {
+    if (root == nullptr) {
+        root = new Node(data, key);
+        return;
+    }
+
+    root = insertAux(root, data, key);
+}
+
+
+template<class T, class K>
+auto AVLTree<T, K>::insertAux(Node *node, const T &data, const K &key) -> Node * {
+    if (node == nullptr) {
+        return new Node(data, key);
+    }
+    if (key < node->key) {
+        node->left = insertAux(node->left, data, key);
+    } else {
+        node->right = insertAux(node->right, data, key);
+    }
+    updateHeight(node);
+    return rebalance(node);
+}
+
+template<class T, class K>
+auto AVLTree<T, K>::rebalance(Node *node) -> Node * {
+    int balance = getBalance(node);
+
+    // Left
+    if (balance > 1)
+        // Right
+        if (getBalance(node->left) < 0) {
+            return rotateLR(node);
+            // else Left
+            return rotateLeft(node);
+        }
+
+    // Right
+    if (balance < -1) {
+        // Left
+        if (getBalance(node->right) > 0) {
+            return rotateRL(node);
+            // else Right
+            return rotateRight(node);
+        }
+    }
+
+    return node;
+}
+
+template<class T, class K>
 void AVLTree<T, K>::deleteTree(Node *head) {
     if (head == nullptr) {
         return;
@@ -36,7 +89,18 @@ void AVLTree<T, K>::deleteTree(Node *head) {
 }
 
 template<class T, class K>
-typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRight(Node *b) {
+auto AVLTree<T, K>::rotateLeft(Node *b) -> Node * {
+    Node *a = b->right;
+    b->right = a->left;
+    a->left = b;
+    updateHeight(a);
+    updateHeight(b);
+
+    return a;
+}
+
+template<class T, class K>
+auto AVLTree<T, K>::rotateRight(Node *b) -> Node * {
     Node *a = b->left;
     b->left = a->right;
     a->right = b;
@@ -47,9 +111,15 @@ typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRight(Node *b) {
 }
 
 template<class T, class K>
-typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateLR(Node *b) {
+auto AVLTree<T, K>::rotateLR(Node *b) -> Node * {
     b->left = rotateLeft(b->left);
     return rotateRight(b);
+}
+
+template<class T, class K>
+auto AVLTree<T, K>::rotateRL(Node *b) -> Node * {
+    b->right = rotateRight(b->right);
+    return rotateLeft(b);
 }
 
 template<class T, class K>
@@ -68,7 +138,7 @@ T *AVLTree<T, K>::search(const K &key) const {
 }
 
 template<class T, class K>
-T *AVLTree<T, K>::searchAux(Node *cur, const K &key) const {
+T *AVLTree<T, K>::searchAux(const Node *cur, const K &key) const {
     if (cur == nullptr) {
         return nullptr;
     }

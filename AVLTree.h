@@ -7,7 +7,6 @@ class AVLTree {
         T data;
         K key;
         int height;
-        Node *father;
         Node *left;
         Node *right;
 
@@ -16,6 +15,12 @@ class AVLTree {
 
     void updateHeight(Node *node);
 
+    T *searchAux(const Node *cur, const K &key) const;
+
+    Node *insertAux(Node *node, const T &data, const K &key);
+
+    auto rebalance(Node *node) -> Node *;
+
     Node *root;
 
 public:
@@ -23,17 +28,21 @@ public:
 
     ~AVLTree();
 
+    void insert(const T &data, const K &key);
+
     void deleteTree(Node *head);
+
+    Node *rotateLeft(Node *b);
 
     Node *rotateRight(Node *b);
 
     Node *rotateLR(Node *b);
+
+    Node *rotateRL(Node *b);
 
     int getBalance(Node *node) const;
 
     int getRoot() const;
 
     T *search(const K &key) const;
-
-    T *searchAux(Node *cur, const K &key) const;
 };
