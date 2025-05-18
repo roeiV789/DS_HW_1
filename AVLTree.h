@@ -20,6 +20,8 @@ class AVLTree {
 
     Node *insertAux(Node *node, const T &data, const K &key);
 
+    Node* removeAux(Node *node, const K &key);
+
     int toArrayAux(Node *node, K *array, int index);
 
     auto rebalance(Node *node) -> Node *;
@@ -30,6 +32,8 @@ public:
     AVLTree();
 
     ~AVLTree();
+
+    void remove(const K &key);
 
     void insert(const T &data, const K &key);
 
@@ -225,4 +229,54 @@ T *AVLTree<T, K>::searchAux(const Node *cur, const K &key) const {
     }
     return searchAux(cur->right, key);
 }
+
+template<class T, class K>
+void AVLTree<T, K>::remove(const K &key) {
+    if (root != nullptr) {
+        removeAux(root, key);
+    }
+}
+
+template<class T, class K>
+auto AVLTree<T, K>::removeAux(Node *node, const K &key)-> Node *{
+    if (node == nullptr) {
+        return nullptr;
+    }
+    if (node->key == key) {
+        //leaf case
+        if(!node->left && !node->right) {
+            delete node;
+            return nullptr;
+        }
+        //one left son
+        if(!node->right) {
+            Node* temp = node->left;
+            delete node;
+            return temp;
+        }
+        //one right son
+        if(!node->left) {
+            Node* temp = node->right;
+            delete node;
+            return temp;
+        }
+        //two sons case - getting min node in tree
+        Node* temp = node->right;
+        while(temp->left) {
+            temp=temp->left;
+        }
+        node->key = temp->key;
+        node->data = temp->data;
+        node->right = removeAux(node->right, temp->key);
+
+    }
+    else if (key < node->key) {
+        node->left = removeAux(node->left, key);
+    } else {
+        node->right = removeAux(node->right, key);
+    }
+    updateHeight(node);
+    return rebalance(node);
+}
+
 
