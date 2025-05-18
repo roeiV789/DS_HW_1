@@ -90,7 +90,7 @@ void AVLTree<T, K>::insert(const T &data, const K &key) {
         return;
     }
 
-    insertAux(root, data, key);
+    root = insertAux(root, data, key);
 }
 
 

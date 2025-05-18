@@ -95,15 +95,7 @@ void avl_tree_test_2() {
     tree.insert(DUMMY_DATA, 4);
     tree.insert(DUMMY_DATA, 5);
     tree.insert(DUMMY_DATA, 6);
-    if(tree.getRoot()->left) {
-        cout << "there is a node on the left";
-    }
-    cout << tree.toArray(arr1) << endl;
-
-    cout << arr1[0] << endl;
-    cout << arr1[1] << endl;
-    cout << arr1[2] << endl;
-    cout << arr1[3] << endl;
+    tree.toArray(arr1);
     assert(arr1[0] == 3);
     assert(arr1[1] == 4);
     assert(arr1[2] == 5);
