@@ -86,7 +86,7 @@ void AVLTree<T, K>::insert(const T &data, const K &key) {
         return;
     }
 
-    root = insertAux(root, data, key);
+    insertAux(root, data, key);
 }
 
 
@@ -115,10 +115,10 @@ int AVLTree<T, K>::toArrayAux(Node *node, K *array, int index) {
     if (node == nullptr) {
         return index;
     }
-    // Preorder traversal
-    array[index++] = node->key;
-    index = toArrayAux(node->left, array, index);
-    index = toArrayAux(node->right, array, index);
+    // BFS traversal (children of node at index i are at 2*i+1 and 2*i+2)
+    array[index] = node->key;
+    toArrayAux(node->left, array, 2 * index + 1);
+    toArrayAux(node->right, array, 2 * index + 2);
     return index;
 }
 
@@ -163,8 +163,8 @@ typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRight(Node *b) {
     Node *a = b->left;
     b->left = a->right;
     a->right = b;
-    updateHeight(a);
     updateHeight(b);
+    updateHeight(a);
 
     return a;
 }
@@ -180,8 +180,8 @@ typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateLeft(Node *b) {
     Node *a = b->right;
     b->right = a->left;
     a->left = b;
-    updateHeight(a);
     updateHeight(b);
+    updateHeight(a);
 
     return a;
 }
@@ -194,16 +194,12 @@ typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRL(Node *b) {
 
 template<class T, class K>
 int AVLTree<T, K>::getBalance(Node *node) const {
-    if (node->left == nullptr && node->right == nullptr) {
+    if (node == nullptr) {
         return 0;
     }
-    if (node->left == nullptr) {
-        return 0 - node->right->height;
-    }
-    if (node->right == nullptr) {
-        return node->left->height;
-    }
-    return node->left->height - node->right->height;
+    int leftHeight = (node->left != nullptr) ? node->left->height : 0;
+    int rightHeight = (node->right != nullptr) ? node->right->height : 0;
+    return leftHeight - rightHeight;
 }
 
 template<class T, class K>
