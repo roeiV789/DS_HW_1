@@ -49,9 +49,9 @@ public:
 
     int getBalance(Node *node) const;
 
-    int getRoot() const;
+    Node* getRoot() const;
 
-    void toArray(K *array);
+    int toArray(K *array);
 
     T *search(const K &key) const;
 };
@@ -110,21 +110,30 @@ auto AVLTree<T, K>::insertAux(Node *node, const T &data, const K &key) -> Node *
 
 // as this function is primarily used for testing, it's ok to skip checking if the array is big enough
 template<class T, class K>
-void AVLTree<T, K>::toArray(K *array) {
-    toArrayAux(root, array, 0);
+int AVLTree<T, K>::toArray(K *array) {
+    return toArrayAux(root, array, 0);
 }
-
 template<class T, class K>
 int AVLTree<T, K>::toArrayAux(Node *node, K *array, int index) {
-    if (node == nullptr) {
+    if(node == nullptr) {
         return index;
     }
-    // BFS traversal (children of node at index i are at 2*i+1 and 2*i+2)
-    array[index] = node->key;
-    toArrayAux(node->left, array, 2 * index + 1);
-    toArrayAux(node->right, array, 2 * index + 2);
+    index = toArrayAux(node->left, array, index);
+    array[index++]=node->key;
+    index = toArrayAux(node->right, array, index);
     return index;
 }
+// template<class T, class K>
+// int AVLTree<T, K>::toArrayAux(Node *node, K *array, int index) {
+//     if (node == nullptr) {
+//         return index;
+//     }
+//     // BFS traversal (children of node at index i are at 2*i+1 and 2*i+2)
+//     array[index] = node->key;
+//     toArrayAux(node->left, array, 2 * index + 1);
+//     toArrayAux(node->right, array, 2 * index + 2);
+//     return index;
+// }
 
 template<class T, class K>
 auto AVLTree<T, K>::rebalance(Node *node) -> Node * {
@@ -207,7 +216,7 @@ int AVLTree<T, K>::getBalance(Node *node) const {
 }
 
 template<class T, class K>
-int AVLTree<T, K>::getRoot() const {
+typename AVLTree<T,K>::Node* AVLTree<T, K>::getRoot() const {
     return root;
 }
 
