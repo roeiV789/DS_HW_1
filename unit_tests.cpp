@@ -7,10 +7,12 @@ using namespace std;
 void avl_tree_test_1();
 
 void avl_tree_test_2();
+void avl_tree_test_3();
 
 int main(){
     avl_tree_test_1();
     avl_tree_test_2();
+    avl_tree_test_3();
     return 0;
 }
 
@@ -90,25 +92,57 @@ void avl_tree_test_1() {
 void avl_tree_test_2() {
     AVLTree<int, int> tree;
     // basic insertion without rotations
-    int *arr1 = new int[4];
+    int *arr1 = new int[7];
+    tree.insert(DUMMY_DATA, 1);
+    tree.insert(DUMMY_DATA, 2);
     tree.insert(DUMMY_DATA, 3);
     tree.insert(DUMMY_DATA, 4);
     tree.insert(DUMMY_DATA, 5);
     tree.insert(DUMMY_DATA, 6);
+    tree.insert(DUMMY_DATA, 7);
     tree.toArray(arr1);
-    assert(arr1[0] == 3);
-    assert(arr1[1] == 4);
-    assert(arr1[2] == 5);
-    assert(arr1[3] == 6);
+    assert(arr1[0] == 1);
+    assert(arr1[1] == 2);
+    assert(arr1[2] == 3);
+    assert(arr1[3] == 4);
+    assert(arr1[4] == 5);
+    assert(arr1[5] == 6);
+    assert(arr1[6] == 7);
     delete[] arr1;
 
-    int *arr2 = new int[3];
-    tree.remove(5);
+    int *arr2 = new int[5];
+    tree.remove(2);
+    tree.remove(4);
     tree.toArray(arr2);
     cout << arr2[0] << endl;
     cout << arr2[1] << endl;
     cout << arr2[2] << endl;
-
+    cout << arr2[3] << endl;
+    cout << arr2[4] << endl;
     delete[] arr2;
+
+}
+void avl_tree_test_3() {
+    AVLTree<int, int> tree;
+    int *arr1 = new int[2];
+    tree.insert(DUMMY_DATA, 2);
+    tree.insert(DUMMY_DATA, 3);
+    tree.toArray(arr1);
+    assert(arr1[0] == 2);
+    assert(arr1[1] == 3);
+    delete[] arr1;
+
+    //edge case of removing last two nodes
+    tree.remove(2);
+    int* arr2 = new int[1];
+    cout << tree.toArray(arr2) << endl;
+    assert(arr2[0] == 3);
+    delete[] arr2;
+    tree.remove(3);
+    if(tree.getRoot()) {
+        cout << "couldnt delete last node";
+    }
+
+
 
 }

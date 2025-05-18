@@ -242,7 +242,7 @@ T *AVLTree<T, K>::searchAux(const Node *cur, const K &key) const {
 template<class T, class K>
 void AVLTree<T, K>::remove(const K &key) {
     if (root != nullptr) {
-        removeAux(root, key);
+        root = removeAux(root, key);
     }
 }
 
