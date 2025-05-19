@@ -28,6 +28,8 @@ class AVLTree {
 
     auto rebalance(Node *node) -> Node *;
 
+    const Node* findGreaterOrEqualAux(const K &key,Node* current, Node* closest) const;
+
     Node *root;
     int n;
 
@@ -63,6 +65,10 @@ public:
     const T* search(const K &key) const;
 
     int getSize() const;
+
+    //function returns the father of the node with the key or the last node that isnt null in the search route
+    const T* findGreaterOrEqual(const K &key) const;
+
 };
 
 template<class T, class K>
@@ -342,4 +348,24 @@ void AVLTree<T, K>::merge(const AVLTree &another) {
             result[resIndex++] = anotherArr[j++];
         }
     }
+}
+
+template <class T, class K>
+const T* AVLTree<T, K>::findGreaterOrEqual(const K &key) const {
+    const typename AVLTree<T,K>::Node* closest = nullptr;
+    closest = findGreaterOrEqualAux(key,root,closest);
+    return closest ? &(closest->data) : nullptr;
+}
+template <class T, class K>
+const typename AVLTree<T, K>::Node* AVLTree<T, K>::findGreaterOrEqualAux(const K &key,
+    typename AVLTree<T,K>::Node* current, typename AVLTree<T,K>::Node* closest) const {
+
+    if(!current) {
+        return closest;
+    }
+    if (key < current->key) {
+        closest = current;
+        return findGreaterOrEqualAux(key, current->left, closest);
+    }
+    return findGreaterOrEqualAux(key, current->right, closest);
 }

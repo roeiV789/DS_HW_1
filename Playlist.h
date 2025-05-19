@@ -5,6 +5,8 @@ using namespace std;
 #include "AVLTree.h"
 #include <memory>
 
+#define MIN_SONG_ID 0
+
 class Playlist {
     int playlistId;
     int size; //number of songs
@@ -27,5 +29,7 @@ public:
     void removeSong(int songId);
 
     bool isInPlaylist(int songId) const;
+
+    int get_song_by_plays(int plays) const;
 
 };

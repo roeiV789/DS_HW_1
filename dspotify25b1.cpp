@@ -95,7 +95,23 @@ output_t<int> DSpotify::get_num_songs(int playlistId){
 }
 
 output_t<int> DSpotify::get_by_plays(int playlistId, int plays){
-    return 0;
+    if(plays < 0 || playlistId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    try {
+        auto res = playlistTree.search(playlistId);
+        if(!res) {
+            return StatusType::FAILURE;
+        }
+        int closestPlays = (*res)->get_song_by_plays(plays);
+        if(closestPlays < 0) {
+            return StatusType::FAILURE;
+        }
+        return output_t<int>(closestPlays);
+    }
+    catch(const std::bad_alloc& e) {
+        return StatusType::ALLOCATION_ERROR;
+    }
 }
 
 StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2){
