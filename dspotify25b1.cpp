@@ -11,10 +11,10 @@ DSpotify::~DSpotify(){
 }
 
 StatusType DSpotify::add_playlist(int playlistId){
+    if(playlistId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
     try {
-        if(playlistId <= 0) {
-            return StatusType::INVALID_INPUT;
-        }
         if(!playlistTree.search(playlistId)) {
             auto playlist = new Playlist(playlistId);
             playlistTree.insert(playlist, playlistId);
@@ -32,10 +32,10 @@ StatusType DSpotify::delete_playlist(int playlistId){
 }
 
 StatusType DSpotify::add_song(int songId, int plays) {
+    if(plays < 0 || songId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
     try {
-        if(plays < 0 || songId <= 0) {
-            return StatusType::INVALID_INPUT;
-        }
         if(!songTree.search(songId)) {
             shared_ptr<Song> newSong = make_shared<Song>(songId, plays);
             songTree.insert(newSong, songId);
@@ -53,12 +53,12 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId){
 }
 
 StatusType DSpotify::delete_song(int songId){
+    if(songId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
     try {
-        if(songId <= 0) {
-            return StatusType::INVALID_INPUT;
-        }
         auto res = songTree.search(songId);
-        if(res&&(*res)->getPlaylistCount()==0) {
+        if((*res)->getPlaylistCount()==0) {
             songTree.remove(songId);
             return StatusType::SUCCESS;
         }
@@ -73,11 +73,11 @@ StatusType DSpotify::remove_from_playlist(int playlistId, int songId){
     return StatusType::FAILURE;
 }
 
-output_t<int> DSpotify::get_plays(int songId){
+output_t<int> DSpotify::get_plays(int songId) {
+    if(songId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
     try {
-        if(songId <= 0) {
-            return StatusType::INVALID_INPUT;
-        }
         auto res = songTree.search(songId);
         if(res) {
             return output_t<int>((*res)->getPlays());
@@ -87,6 +87,7 @@ output_t<int> DSpotify::get_plays(int songId){
     catch(const std::bad_alloc& e) {
         return StatusType::ALLOCATION_ERROR;
     }
+
 }
 
 output_t<int> DSpotify::get_num_songs(int playlistId){
