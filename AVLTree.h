@@ -61,6 +61,8 @@ public:
     int toArray(K *array);
 
     T *search(const K &key) const;
+
+    int getSize() const;
 };
 
 template<class T, class K>
@@ -241,6 +243,11 @@ T *AVLTree<T, K>::search(const K &key) const {
 }
 
 template<class T, class K>
+int AVLTree<T, K>::getSize() const {
+    return n;
+}
+
+template<class T, class K>
 T *AVLTree<T, K>::searchAux(const Node *cur, const K &key) const {
     if (cur == nullptr) {
         return nullptr;
@@ -304,7 +311,35 @@ auto AVLTree<T, K>::removeAux(Node *node, const K &key) -> Node * {
 }
 
 template<class T, class K>
-void AVLTree<T, K>::merge(AVLTree &another) {
-    Node *array = new Node[this->n + another.n];
+void AVLTree<T, K>::merge(const AVLTree &another) {
+    // WIP! NOT FINISHED!!
+    Node *thisArr = new Node[this->getSize()];
+    Node *anotherArr = new Node[another.getSize()];
+    Node *result = new Node[this->getSize() + another.getSize()];
+    // toArray returns a sorted array as it traverses inorder
+    this->toArray(thisArr);
+    another.toArray(anotherArr);
+    Array(anotherArr);
+    int i = 0, j = 0;
+    int resIndex = 0;
+    while (i < this->getSize() && j < another.getSize()) {
+        if (thisArr[i].key < anotherArr[j].key) {
+            result[resIndex++] = thisArr[i++];
+        } else if (thisArr[i].key > anotherArr[j].key) {
+            result[resIndex++] = anotherArr[j++];
+        } else {
+            result[resIndex++] = thisArr[i++];
+            j++;
+        }
+    }
 
+    if (i < this->getSize()) {
+        while (i < this->getSize()) {
+            result[resIndex++] = thisArr[i++];
+        }
+    } else if (j < another.getSize()) {
+        while (j < another.getSize()) {
+            result[resIndex++] = anotherArr[j++];
+        }
+    }
 }
