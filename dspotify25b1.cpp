@@ -32,6 +32,19 @@ StatusType DSpotify::delete_playlist(int playlistId){
 }
 
 StatusType DSpotify::add_song(int songId, int plays){
+    if(plays < 0 || songId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    if(!songTree.search(songId)) {
+        try {
+            shared_ptr<Song> newSong = make_shared<Song>(songId, plays);
+            songTree.insert(newSong, songId);
+            return StatusType::SUCCESS;
+        }
+        catch(std::bad_alloc& e) {
+            return StatusType::ALLOCATION_ERROR;
+        }
+    }
     return StatusType::FAILURE;
 }
 

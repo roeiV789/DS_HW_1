@@ -12,7 +12,7 @@
 
 #ifndef DSPOTIFY25SPRING_WET1_H_
 #define DSPOTIFY25SPRING_WET1_H_
-
+using namespace std;
 #include "wet1util.h"
 #include "Playlist.h"
 class DSpotify {
