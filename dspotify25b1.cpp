@@ -53,6 +53,18 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId){
 }
 
 StatusType DSpotify::delete_song(int songId){
+    if(songId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    if(songTree.search(songId)&&(*songTree.search(songId))->getPlaylistCount()==0) {
+        try {
+            songTree.remove(songId);
+            return StatusType::SUCCESS;
+        }
+        catch(std::bad_alloc& e) {
+            return StatusType::ALLOCATION_ERROR;
+        }
+    }
     return StatusType::FAILURE;
 }
 
