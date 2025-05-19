@@ -4,15 +4,26 @@
 #include "dspotify25b1.h"
 
 
-DSpotify::DSpotify(){
-
-}
+DSpotify::DSpotify() = default;
 
 DSpotify::~DSpotify(){
 
 }
 
 StatusType DSpotify::add_playlist(int playlistId){
+    if(playlistId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    if(!playlistTree.search(playlistId)) {
+        try {
+            auto playlist = new Playlist(playlistId);
+            playlistTree.insert(playlist, playlistId);
+            return StatusType::SUCCESS;
+        }
+        catch(std::bad_alloc& e) {
+            return StatusType::ALLOCATION_ERROR;
+        }
+    }
     return StatusType::FAILURE;
 }
 
