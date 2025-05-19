@@ -14,12 +14,12 @@
 #define DSPOTIFY25SPRING_WET1_H_
 
 #include "wet1util.h"
-
+#include "Playlist.h"
 class DSpotify {
 private:
-    //
-    // Here you may add anything you want
-    //
+    AVLTree<shared_ptr<Song>,int> songTree;
+    AVLTree<Playlist*,int> playlistTree;
+
     
 public:
     // <DO-NOT-MODIFY> {
