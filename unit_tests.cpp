@@ -8,11 +8,13 @@ void avl_tree_test_1();
 
 void avl_tree_test_2();
 void avl_tree_test_3();
+void avl_tree_test_4();
 
 int main(){
     avl_tree_test_1();
     avl_tree_test_2();
     avl_tree_test_3();
+    avl_tree_test_4();
     return 0;
 }
 
@@ -145,4 +147,37 @@ void avl_tree_test_3() {
 
 
 
+}
+void avl_tree_test_4() {
+    AVLTree<int, int> tree;
+
+    int *arr1 = new int[7];
+    tree.insert(DUMMY_DATA, 1);
+    tree.insert(DUMMY_DATA, 2);
+    tree.insert(DUMMY_DATA, 3);
+    tree.insert(DUMMY_DATA, 4);
+    tree.insert(DUMMY_DATA, 5);
+    tree.insert(DUMMY_DATA, 6);
+    tree.insert(DUMMY_DATA, 7);
+    tree.toArray(arr1);
+    assert(arr1[0] == 1);
+    assert(arr1[1] == 2);
+    assert(arr1[2] == 3);
+    assert(arr1[3] == 4);
+    assert(arr1[4] == 5);
+    assert(arr1[5] == 6);
+    assert(arr1[6] == 7);
+    delete[] arr1;
+    if(tree.search(2)) {
+        cout << "test 4: success" << endl;
+    }
+    else {
+        cout << "test 4: failed" << endl;
+    }
+    if(tree.search(8)) {
+        cout << "test 4: failed" << endl;
+    }
+    else {
+        cout << "test 4: success" << endl;
+    }
 }

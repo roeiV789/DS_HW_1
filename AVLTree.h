@@ -16,7 +16,7 @@ class AVLTree {
 
     void updateHeight(Node *node);
 
-    T* searchAux(const Node *cur, const K &key) const;
+    const T* searchAux(const Node *cur, const K &key) const;
 
     Node *insertAux(Node *node, const T &data, const K &key);
 
@@ -60,7 +60,7 @@ public:
 
     int toArray(K *array);
 
-    T* search(const K &key) const;
+    const T* search(const K &key) const;
 
     int getSize() const;
 };
@@ -243,12 +243,12 @@ int AVLTree<T, K>::getSize() const {
 }
 
 template<class T, class K>
-T* AVLTree<T, K>::search(const K &key) const {
+const T* AVLTree<T, K>::search(const K &key) const {
     return searchAux(root, key);
 }
 
 template<class T, class K>
-T* AVLTree<T, K>::searchAux(const Node *cur, const K &key) const {
+const T* AVLTree<T, K>::searchAux(const Node *cur, const K &key) const {
     if (cur == nullptr) {
         return nullptr;
     }
