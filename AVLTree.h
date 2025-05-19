@@ -20,9 +20,9 @@ class AVLTree {
 
     Node *insertAux(Node *node, const T &data, const K &key);
 
-    Node *removeAux(Node *node, const K &key);
+    int toArray(Node *array);
 
-    void merge(AVLTree &another);
+    Node *removeAux(Node *node, const K &key);
 
     int toArrayAux(Node *node, K *array, int index);
 
@@ -35,6 +35,8 @@ public:
     AVLTree();
 
     ~AVLTree();
+
+    void merge(const AVLTree &another);
 
     void remove(const K &key);
 
@@ -53,6 +55,8 @@ public:
     int getBalance(Node *node) const;
 
     Node *getRoot() const;
+
+    int toArrayAux(Node *node, Node *array, int index);
 
     int toArray(K *array);
 
@@ -111,6 +115,22 @@ auto AVLTree<T, K>::insertAux(Node *node, const T &data, const K &key) -> Node *
     }
     updateHeight(node);
     return rebalance(node);
+}
+
+template<class T, class K>
+int AVLTree<T, K>::toArray(Node *array) {
+    return toArrayAux(root, array, 0);
+}
+
+template<class T, class K>
+int AVLTree<T, K>::toArrayAux(Node *node, Node *array, int index) {
+    if (node == nullptr) {
+        return index;
+    }
+    index = toArrayAux(node->left, array, index);
+    array[index++] = Node(node->data, node->key);
+    index = toArrayAux(node->right, array, index);
+    return index;
 }
 
 // as this function is primarily used for testing, it's ok to skip checking if the array is big enough
@@ -285,4 +305,6 @@ auto AVLTree<T, K>::removeAux(Node *node, const K &key) -> Node * {
 
 template<class T, class K>
 void AVLTree<T, K>::merge(AVLTree &another) {
+    Node *array = new Node[this->n + another.n];
+
 }
