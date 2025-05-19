@@ -20,13 +20,16 @@ class AVLTree {
 
     Node *insertAux(Node *node, const T &data, const K &key);
 
-    Node* removeAux(Node *node, const K &key);
+    Node *removeAux(Node *node, const K &key);
+
+    void merge(AVLTree &another);
 
     int toArrayAux(Node *node, K *array, int index);
 
     auto rebalance(Node *node) -> Node *;
 
     Node *root;
+    int n;
 
 public:
     AVLTree();
@@ -49,7 +52,7 @@ public:
 
     int getBalance(Node *node) const;
 
-    Node* getRoot() const;
+    Node *getRoot() const;
 
     int toArray(K *array);
 
@@ -85,6 +88,8 @@ AVLTree<T, K>::~AVLTree() {
 
 template<class T, class K>
 void AVLTree<T, K>::insert(const T &data, const K &key) {
+    // increase node counter
+    ++(this->n);
     if (root == nullptr) {
         root = new Node(data, key);
         return;
@@ -113,27 +118,17 @@ template<class T, class K>
 int AVLTree<T, K>::toArray(K *array) {
     return toArrayAux(root, array, 0);
 }
+
 template<class T, class K>
 int AVLTree<T, K>::toArrayAux(Node *node, K *array, int index) {
-    if(node == nullptr) {
+    if (node == nullptr) {
         return index;
     }
     index = toArrayAux(node->left, array, index);
-    array[index++]=node->key;
+    array[index++] = node->key;
     index = toArrayAux(node->right, array, index);
     return index;
 }
-// template<class T, class K>
-// int AVLTree<T, K>::toArrayAux(Node *node, K *array, int index) {
-//     if (node == nullptr) {
-//         return index;
-//     }
-//     // BFS traversal (children of node at index i are at 2*i+1 and 2*i+2)
-//     array[index] = node->key;
-//     toArrayAux(node->left, array, 2 * index + 1);
-//     toArrayAux(node->right, array, 2 * index + 2);
-//     return index;
-// }
 
 template<class T, class K>
 auto AVLTree<T, K>::rebalance(Node *node) -> Node * {
@@ -216,7 +211,7 @@ int AVLTree<T, K>::getBalance(Node *node) const {
 }
 
 template<class T, class K>
-typename AVLTree<T,K>::Node* AVLTree<T, K>::getRoot() const {
+typename AVLTree<T, K>::Node *AVLTree<T, K>::getRoot() const {
     return root;
 }
 
@@ -247,39 +242,39 @@ void AVLTree<T, K>::remove(const K &key) {
 }
 
 template<class T, class K>
-auto AVLTree<T, K>::removeAux(Node *node, const K &key)-> Node *{
+auto AVLTree<T, K>::removeAux(Node *node, const K &key) -> Node * {
     if (node == nullptr) {
         return nullptr;
     }
     if (node->key == key) {
+        // decrease node counter
+        --(this->n);
         //leaf case
-        if(!node->left && !node->right) {
+        if (!node->left && !node->right) {
             delete node;
             return nullptr;
         }
         //one left son
-        if(!node->right) {
-            Node* temp = node->left;
+        if (!node->right) {
+            Node *temp = node->left;
             delete node;
             return temp;
         }
         //one right son
-        if(!node->left) {
-            Node* temp = node->right;
+        if (!node->left) {
+            Node *temp = node->right;
             delete node;
             return temp;
         }
         //two sons case - getting min node in tree
-        Node* temp = node->right;
-        while(temp->left) {
-            temp=temp->left;
+        Node *temp = node->right;
+        while (temp->left) {
+            temp = temp->left;
         }
         node->key = temp->key;
         node->data = temp->data;
         node->right = removeAux(node->right, temp->key);
-
-    }
-    else if (key < node->key) {
+    } else if (key < node->key) {
         node->left = removeAux(node->left, key);
     } else {
         node->right = removeAux(node->right, key);
@@ -288,4 +283,6 @@ auto AVLTree<T, K>::removeAux(Node *node, const K &key)-> Node *{
     return rebalance(node);
 }
 
-
+template<class T, class K>
+void AVLTree<T, K>::merge(AVLTree &another) {
+}
