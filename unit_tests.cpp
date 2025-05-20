@@ -17,6 +17,8 @@ void avl_tree_test_5();
 
 void avl_tree_test_6();
 
+void avl_tree_test_7();
+
 int main() {
     avl_tree_test_1();
     avl_tree_test_2();
@@ -24,6 +26,7 @@ int main() {
     avl_tree_test_4();
     avl_tree_test_5();
     avl_tree_test_6();
+    avl_tree_test_7();
     cout << "ALL TESTS PASSED" << endl;
     return 0;
 }
@@ -230,6 +233,38 @@ void avl_tree_test_6() {
 
     AVLTree<int, int> tree2;
     tree2.insert(DUMMY_DATA, 4);
+    tree2.insert(DUMMY_DATA, 5);
+
+    Node *dest = new Node[5];
+    tree1.mergeToArray(tree2, dest);
+    assert(dest[0].key == 1);
+    assert(dest[1].key == 2);
+    assert(dest[2].key == 3);
+    assert(dest[3].key == 4);
+    assert(dest[4].key == 5);
+
+    tree1.recreateFromArray(dest, 5);
+    int *arr1 = new int[5];
+    tree1.toArray(arr1);
+    assert(tree1.getSize() == 5);
+    assert(arr1[0] == 1);
+    assert(arr1[1] == 2);
+    assert(arr1[2] == 3);
+    assert(arr1[3] == 4);
+    assert(arr1[4] == 5);
+}
+
+void avl_tree_test_7() {
+    // merge test 3: two trees with intersecting set of keys
+    AVLTree<int, int> tree1;
+    tree1.insert(DUMMY_DATA, 1);
+    tree1.insert(DUMMY_DATA, 2);
+    tree1.insert(DUMMY_DATA, 3);
+    tree1.insert(DUMMY_DATA, 4);
+
+    AVLTree<int, int> tree2;
+    tree2.insert(DUMMY_DATA, 2);
+    tree2.insert(DUMMY_DATA, 3);
     tree2.insert(DUMMY_DATA, 5);
 
     Node *dest = new Node[5];

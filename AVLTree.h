@@ -71,8 +71,6 @@ private:
 
     const Node *findGreaterOrEqualAux(const K &key, Node *current, Node *closest) const;
 
-    void copyUniqueElements(const Node *data_raw, int n_raw, Node *data);
-
     int countUniqueElements(const Node *data_raw, int n_raw);
 
     Node *root;
@@ -101,47 +99,13 @@ AVLTree<T, K>::AVLTree() : root(nullptr), n(0) {
 }
 
 template<class T, class K>
-void AVLTree<T, K>::recreateFromArray(const Node *data_raw, int data_size) {
-    if (data_raw == nullptr)
+void AVLTree<T, K>::recreateFromArray(const Node *data, int size)  {
+    if (data == nullptr || size <= 0)
         throw std::logic_error("this should not happen");
     deleteTree(root);
-    this->n = countUniqueElements(data_raw, data_size);
-    Node *data = new Node[n];
-    copyUniqueElements(data_raw, data_size, data);
-    root = createFromArrayAux(root, data, 0, n - 1);
+    this->n = size;
+    root = createFromArrayAux(root, data, 0, size - 1);
     delete[] data;
-}
-
-template<class T, class K>
-void AVLTree<T, K>::copyUniqueElements(const Node *data_raw, int n_raw, Node *data) {
-    if (data_raw == nullptr || n_raw <= 0) {
-        throw logic_error("this should not happen");
-    }
-    int uniqueIndex = 0;
-    data[uniqueIndex++] = Node(data_raw[0].data, data_raw[0].key);
-    for (int i = 1; i < n_raw; ++i) {
-        if (data_raw[i].key != data_raw[i - 1].key) {
-            data[uniqueIndex++] = Node(data_raw[i].data, data_raw[i].key);
-        }
-    }
-}
-
-// the function assumes the array is sorted
-template<class T, class K>
-int AVLTree<T, K>::countUniqueElements(const Node *data_raw, int n_raw) {
-    if (data_raw == nullptr || n_raw <= 0) {
-        throw logic_error("this should not happen");
-    }
-
-    int uniqueCount = 1; // start with 1 for the first element
-
-    for (int i = 1; i < n_raw; ++i) {
-        if (data_raw[i].key != data_raw[i - 1].key) {
-            ++uniqueCount;
-        }
-    }
-
-    return uniqueCount;
 }
 
 template<class T, class K>
@@ -384,6 +348,8 @@ auto AVLTree<T, K>::removeAux(Node *node, const K &key) -> Node * {
     return rebalance(node);
 }
 
+// this function modifies destination to be a SORTED array of UNIQUE elements.
+// it modifies first n(this) + n(another) elements of destination and leaves rest of the elements unchanged
 template<class T, class K>
 void AVLTree<T, K>::mergeToArray(const AVLTree &another, Node *destination) const {
     Node *thisArr = new Node[this->getSize()];
