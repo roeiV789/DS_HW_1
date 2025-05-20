@@ -30,13 +30,17 @@ class AVLTree {
 
     const Node *findGreaterOrEqualAux(const K &key, Node *current, Node *closest) const;
 
+    void copyUniqueElements(const Node *data_raw, int n_raw, Node *data);
+
+    int countUniqueElements(const Node *data_raw, int n_raw);
+
     Node *root;
     int n;
 
 public:
     AVLTree();
 
-    AVLTree(const Node *data, int n);
+    AVLTree(const Node *data, int n_raw);
 
     ~AVLTree();
 
@@ -94,13 +98,48 @@ AVLTree<T, K>::AVLTree() : root(nullptr) {
 }
 
 template<class T, class K>
-AVLTree<T, K>::AVLTree(const Node *data, int n): n(n) {
-    if (data == nullptr)
+AVLTree<T, K>::AVLTree(const Node *data_raw, int n_raw) {
+    if (data_raw == nullptr)
         throw std::logic_error("this should not happen");
-    deleteTree(root); // we should release the memory held by the tree
+    deleteTree(root); // release the memory held by the tree
+    int n = countUniqueElements(data_raw, n_raw);
+    Node *data = new Node[n];
+    copyUniqueElements(data_raw, n_raw, data);
     root = createFromArrayAux(root, data, 0, n - 1);
+    delete[] data;
 }
 
+template<class T, class K>
+void AVLTree<T, K>::copyUniqueElements(const Node *data_raw, int n_raw, Node *data) {
+    if (data_raw == nullptr || n_raw <= 0) {
+        throw logic_error("this should not happen");
+    }
+    int uniqueIndex = 0;
+    data[uniqueIndex++] = Node(data_raw[0].data, data_raw[0].key);
+    for (int i = 1; i < n_raw; ++i) {
+        if (data_raw[i].key != data_raw[i - 1].key) {
+            data[uniqueIndex++] = Node(data_raw[i].data, data_raw[i].key);
+        }
+    }
+}
+
+// the function assumes the array is sorted
+template<class T, class K>
+int AVLTree<T, K>::countUniqueElements(const Node *data_raw, int n_raw) {
+    if (data_raw == nullptr || n_raw <= 0) {
+        throw logic_error("this should not happen");
+    }
+
+    int uniqueCount = 1; // start with 1 for the first element
+
+    for (int i = 1; i < n_raw; ++i) {
+        if (data_raw[i].key != data_raw[i - 1].key) {
+            ++uniqueCount;
+        }
+    }
+
+    return uniqueCount;
+}
 
 template<class T, class K>
 auto AVLTree<T, K>::createFromArrayAux(Node *curr, const Node *data, int begin, int end) -> Node * {
