@@ -38,7 +38,7 @@ public:
 
     ~AVLTree();
 
-    void merge(const AVLTree &another);
+    void mergeToArray(const AVLTree &another, Node *destination) const;
 
     void remove(const K &key);
 
@@ -317,11 +317,9 @@ auto AVLTree<T, K>::removeAux(Node *node, const K &key) -> Node * {
 }
 
 template<class T, class K>
-void AVLTree<T, K>::merge(const AVLTree &another) {
-    // WIP! NOT FINISHED!!
+void AVLTree<T, K>::mergeToArray(const AVLTree &another, Node *destination) const {
     Node *thisArr = new Node[this->getSize()];
     Node *anotherArr = new Node[another.getSize()];
-    Node *result = new Node[this->getSize() + another.getSize()];
     // toArray returns a sorted array as it traverses inorder
     this->toArray(thisArr);
     another.toArray(anotherArr);
@@ -330,24 +328,27 @@ void AVLTree<T, K>::merge(const AVLTree &another) {
     int resIndex = 0;
     while (i < this->getSize() && j < another.getSize()) {
         if (thisArr[i].key < anotherArr[j].key) {
-            result[resIndex++] = thisArr[i++];
+            (&destination)[resIndex++] = thisArr[i++];
         } else if (thisArr[i].key > anotherArr[j].key) {
-            result[resIndex++] = anotherArr[j++];
+            (&destination)[resIndex++] = anotherArr[j++];
         } else {
-            result[resIndex++] = thisArr[i++];
+            (&destination)[resIndex++] = thisArr[i++];
             j++;
         }
     }
 
     if (i < this->getSize()) {
         while (i < this->getSize()) {
-            result[resIndex++] = thisArr[i++];
+            (&destination)[resIndex++] = thisArr[i++];
         }
     } else if (j < another.getSize()) {
         while (j < another.getSize()) {
-            result[resIndex++] = anotherArr[j++];
+            (&destination)[resIndex++] = anotherArr[j++];
         }
     }
+
+    delete[] thisArr;
+    delete[] anotherArr;
 }
 
 template <class T, class K>
