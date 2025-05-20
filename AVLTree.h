@@ -1,6 +1,4 @@
 #pragma once
-#include <algorithm>
-#include <cmath>
 
 template<class T, class K>
 class AVLTree {
@@ -16,7 +14,7 @@ class AVLTree {
 
     void updateHeight(Node *node);
 
-    const T* searchAux(const Node *cur, const K &key) const;
+    const T *searchAux(const Node *cur, const K &key) const;
 
     Node *insertAux(Node *node, const T &data, const K &key);
 
@@ -28,13 +26,17 @@ class AVLTree {
 
     auto rebalance(Node *node) -> Node *;
 
-    const Node* findGreaterOrEqualAux(const K &key,Node* current, Node* closest) const;
+    Node *createFromArrayAux(Node *curr, const Node *data, int begin, int end);
+
+    const Node *findGreaterOrEqualAux(const K &key, Node *current, Node *closest) const;
 
     Node *root;
     int n;
 
 public:
     AVLTree();
+
+    AVLTree(const Node *data, int n);
 
     ~AVLTree();
 
@@ -62,13 +64,12 @@ public:
 
     int toArray(K *array);
 
-    const T* search(const K &key) const;
+    const T *search(const K &key) const;
 
     int getSize() const;
 
     //function returns the father of the node with the key or the last node that isnt null in the search route
-    const T* findGreaterOrEqual(const K &key) const;
-
+    const T *findGreaterOrEqual(const K &key) const;
 };
 
 template<class T, class K>
@@ -90,6 +91,29 @@ void AVLTree<T, K>::updateHeight(Node *node) {
 
 template<class T, class K>
 AVLTree<T, K>::AVLTree() : root(nullptr) {
+}
+
+template<class T, class K>
+AVLTree<T, K>::AVLTree(const Node *data, int n): n(n) {
+    if (data == nullptr)
+        throw std::logic_error("this should not happen");
+    deleteTree(root); // we should release the memory held in the tree
+    root = createFromArrayAux(root, data, 0, n - 1);
+}
+
+
+template<class T, class K>
+auto AVLTree<T, K>::createFromArrayAux(Node *curr, const Node *data, int begin, int end) -> Node * {
+    int mid = (begin + end) / 2;
+    curr = new Node(data[mid].data, data[mid].key);
+    if (begin < mid) {
+        curr->left = createFromArrayAux(curr->left, data, begin, mid - 1);
+    }
+    if (mid < end) {
+        curr->right = createFromArrayAux(curr->right, data, mid + 1, end);
+    }
+    updateHeight(curr);
+    return curr;
 }
 
 template<class T, class K>
@@ -249,12 +273,12 @@ int AVLTree<T, K>::getSize() const {
 }
 
 template<class T, class K>
-const T* AVLTree<T, K>::search(const K &key) const {
+const T *AVLTree<T, K>::search(const K &key) const {
     return searchAux(root, key);
 }
 
 template<class T, class K>
-const T* AVLTree<T, K>::searchAux(const Node *cur, const K &key) const {
+const T *AVLTree<T, K>::searchAux(const Node *cur, const K &key) const {
     if (cur == nullptr) {
         return nullptr;
     }
@@ -351,17 +375,18 @@ void AVLTree<T, K>::mergeToArray(const AVLTree &another, Node *destination) cons
     delete[] anotherArr;
 }
 
-template <class T, class K>
-const T* AVLTree<T, K>::findGreaterOrEqual(const K &key) const {
-    const typename AVLTree<T,K>::Node* closest = nullptr;
-    closest = findGreaterOrEqualAux(key,root,closest);
+template<class T, class K>
+const T *AVLTree<T, K>::findGreaterOrEqual(const K &key) const {
+    const typename AVLTree<T, K>::Node *closest = nullptr;
+    closest = findGreaterOrEqualAux(key, root, closest);
     return closest ? &(closest->data) : nullptr;
 }
-template <class T, class K>
-const typename AVLTree<T, K>::Node* AVLTree<T, K>::findGreaterOrEqualAux(const K &key,
-    typename AVLTree<T,K>::Node* current, typename AVLTree<T,K>::Node* closest) const {
 
-    if(!current) {
+template<class T, class K>
+const typename AVLTree<T, K>::Node *AVLTree<T, K>::findGreaterOrEqualAux(const K &key,
+                                                                         typename AVLTree<T, K>::Node *current,
+                                                                         typename AVLTree<T, K>::Node *closest) const {
+    if (!current) {
         return closest;
     }
     if (key < current->key) {
