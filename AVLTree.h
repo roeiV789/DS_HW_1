@@ -1,5 +1,6 @@
 #pragma once
 
+
 template<class T, class K>
 class AVLTree {
 public:
@@ -50,7 +51,7 @@ public:
     int getSize() const;
 
     //function returns the father of the node with the key or the last node that isnt null in the search route
-    const T *findGreaterOrEqual(const K &key) const;
+    T findGreaterOrEqual(const K &key, bool &found) const;
 
 private:
     void updateHeight(Node *node);
@@ -69,9 +70,7 @@ private:
 
     Node *createFromArrayAux(Node *curr, const Node *data, int begin, int end);
 
-    const Node *findGreaterOrEqualAux(const K &key, Node *current, Node *closest) const;
-
-    int countUniqueElements(const Node *data_raw, int n_raw);
+    auto findGreaterOrEqualAux(const K &key, Node *current, Node *closest) -> Node * const;
 
     Node *root;
     int n;
@@ -99,7 +98,7 @@ AVLTree<T, K>::AVLTree() : root(nullptr), n(0) {
 }
 
 template<class T, class K>
-void AVLTree<T, K>::recreateFromArray(const Node *data, int size)  {
+void AVLTree<T, K>::recreateFromArray(const Node *data, int size) {
     if (data == nullptr || size <= 0)
         throw std::logic_error("this should not happen");
     deleteTree(root);
@@ -385,16 +384,20 @@ void AVLTree<T, K>::mergeToArray(const AVLTree &another, Node *destination) cons
 }
 
 template<class T, class K>
-const T *AVLTree<T, K>::findGreaterOrEqual(const K &key) const {
-    const typename AVLTree<T, K>::Node *closest = nullptr;
-    closest = findGreaterOrEqualAux(key, root, closest);
-    return closest ? &(closest->data) : nullptr;
+T AVLTree<T, K>::findGreaterOrEqual(const K &key, bool &found) const {
+    Node *closest = findGreaterOrEqualAux(key, root, nullptr);
+    if (closest == nullptr) {
+        found = false;
+        return T();
+    }
+    found = true;
+    return closest->data;
 }
 
 template<class T, class K>
-const typename AVLTree<T, K>::Node *AVLTree<T, K>::findGreaterOrEqualAux(const K &key,
-                                                                         typename AVLTree<T, K>::Node *current,
-                                                                         typename AVLTree<T, K>::Node *closest) const {
+auto AVLTree<T, K>::findGreaterOrEqualAux(const K &key,
+                                          Node *current,
+                                          Node *closest) -> Node * const {
     if (!current) {
         return closest;
     }
