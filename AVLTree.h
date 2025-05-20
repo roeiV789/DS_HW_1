@@ -97,7 +97,7 @@ template<class T, class K>
 AVLTree<T, K>::AVLTree(const Node *data, int n): n(n) {
     if (data == nullptr)
         throw std::logic_error("this should not happen");
-    deleteTree(root); // we should release the memory held in the tree
+    deleteTree(root); // we should release the memory held by the tree
     root = createFromArrayAux(root, data, 0, n - 1);
 }
 
