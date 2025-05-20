@@ -17,7 +17,7 @@ public:
 
     AVLTree();
 
-    AVLTree(const Node *data, int n_raw);
+    void recreateFromArray(const Node *data_raw, int data_size);
 
     ~AVLTree();
 
@@ -101,13 +101,13 @@ AVLTree<T, K>::AVLTree() : root(nullptr), n(0) {
 }
 
 template<class T, class K>
-AVLTree<T, K>::AVLTree(const Node *data_raw, int n_raw) {
+void AVLTree<T, K>::recreateFromArray(const Node *data_raw, int data_size) {
     if (data_raw == nullptr)
         throw std::logic_error("this should not happen");
-    deleteTree(root); // release the memory held by the tree
-    int n = countUniqueElements(data_raw, n_raw);
+    deleteTree(root);
+    this->n = countUniqueElements(data_raw, data_size);
     Node *data = new Node[n];
-    copyUniqueElements(data_raw, n_raw, data);
+    copyUniqueElements(data_raw, data_size, data);
     root = createFromArrayAux(root, data, 0, n - 1);
     delete[] data;
 }

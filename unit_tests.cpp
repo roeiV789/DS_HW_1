@@ -3,6 +3,7 @@
 using namespace std;
 #include "AVLTree.h"
 #define DUMMY_DATA 0
+typedef AVLTree<int, int>::Node Node;
 
 void avl_tree_test_1();
 
@@ -12,11 +13,17 @@ void avl_tree_test_3();
 
 void avl_tree_test_4();
 
+void avl_tree_test_5();
+
+void avl_tree_test_6();
+
 int main() {
     avl_tree_test_1();
     avl_tree_test_2();
     avl_tree_test_3();
     avl_tree_test_4();
+    avl_tree_test_5();
+    avl_tree_test_6();
     cout << "ALL TESTS PASSED" << endl;
     return 0;
 }
@@ -141,7 +148,7 @@ void avl_tree_test_3() {
 
     //edge case of removing last two nodes
     tree.remove(2);
-    int* arr2 = new int[1];
+    int *arr2 = new int[1];
     tree.toArray(arr2);
     assert(arr2[0] == 3);
     delete[] arr2;
@@ -179,4 +186,52 @@ void avl_tree_test_4() {
     } else {
         cout << "test 4: success" << endl;
     }
+}
+
+void avl_tree_test_5() {
+    // case 1: two trees with different set of keys s.t. the total number of elements is even
+    AVLTree<int, int> tree1;
+    tree1.insert(DUMMY_DATA, 1);
+    tree1.insert(DUMMY_DATA, 2);
+    tree1.insert(DUMMY_DATA, 3);
+
+    AVLTree<int, int> tree2;
+    tree2.insert(DUMMY_DATA, 4);
+    tree2.insert(DUMMY_DATA, 5);
+    tree2.insert(DUMMY_DATA, 6);
+
+    Node *dest = new Node[6];
+    tree1.mergeToArray(tree2, dest);
+    assert(dest[0].key == 1);
+    assert(dest[1].key == 2);
+    assert(dest[2].key == 3);
+    assert(dest[3].key == 4);
+    assert(dest[4].key == 5);
+    assert(dest[5].key == 6);
+
+    tree1.recreateFromArray(dest, 6);
+    int *arr1 = new int[6];
+    tree1.toArray(arr1);
+    assert(tree1.getSize() == 6);
+    assert(arr1[0] == 1);
+    assert(arr1[1] == 2);
+    assert(arr1[2] == 3);
+    assert(arr1[3] == 4);
+    assert(arr1[4] == 5);
+    assert(arr1[5] == 6);
+}
+
+void avl_tree_test_6() {
+    // case 1: two trees with different set of keys s.t. the total number of elements is odd
+    AVLTree<int, int> tree1;
+    tree1.insert(DUMMY_DATA, 1);
+    tree1.insert(DUMMY_DATA, 2);
+    tree1.insert(DUMMY_DATA, 3);
+
+    AVLTree<int, int> tree2;
+    tree1.insert(DUMMY_DATA, 4);
+    tree1.insert(DUMMY_DATA, 5);
+
+
+    // case 2: trees with intersecting set of keys
 }
