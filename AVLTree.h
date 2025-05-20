@@ -391,22 +391,22 @@ void AVLTree<T, K>::mergeToArray(const AVLTree &another, Node *destination) cons
     int resIndex = 0;
     while (i < this->getSize() && j < another.getSize()) {
         if (thisArr[i].key < anotherArr[j].key) {
-            (&destination)[resIndex++] = thisArr[i++];
+            destination[resIndex++] = thisArr[i++];
         } else if (thisArr[i].key > anotherArr[j].key) {
-            (&destination)[resIndex++] = anotherArr[j++];
+            destination[resIndex++] = anotherArr[j++];
         } else {
-            (&destination)[resIndex++] = thisArr[i++];
+            destination[resIndex++] = thisArr[i++];
             j++;
         }
     }
 
     if (i < this->getSize()) {
         while (i < this->getSize()) {
-            (&destination)[resIndex++] = thisArr[i++];
+            destination[resIndex++] = thisArr[i++];
         }
     } else if (j < another.getSize()) {
         while (j < another.getSize()) {
-            (&destination)[resIndex++] = anotherArr[j++];
+            destination[resIndex++] = anotherArr[j++];
         }
     }
 
