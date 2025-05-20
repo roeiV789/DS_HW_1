@@ -2,6 +2,7 @@
 
 template<class T, class K>
 class AVLTree {
+public:
     struct Node {
         T data;
         K key;
@@ -10,34 +11,10 @@ class AVLTree {
         Node *right;
 
         Node(const T &data, const K &key);
+
+        Node() = default;
     };
 
-    void updateHeight(Node *node);
-
-    const T *searchAux(const Node *cur, const K &key) const;
-
-    Node *insertAux(Node *node, const T &data, const K &key);
-
-    int toArray(Node *array);
-
-    Node *removeAux(Node *node, const K &key);
-
-    int toArrayAux(Node *node, K *array, int index);
-
-    auto rebalance(Node *node) -> Node *;
-
-    Node *createFromArrayAux(Node *curr, const Node *data, int begin, int end);
-
-    const Node *findGreaterOrEqualAux(const K &key, Node *current, Node *closest) const;
-
-    void copyUniqueElements(const Node *data_raw, int n_raw, Node *data);
-
-    int countUniqueElements(const Node *data_raw, int n_raw);
-
-    Node *root;
-    int n;
-
-public:
     AVLTree();
 
     AVLTree(const Node *data, int n_raw);
@@ -74,6 +51,32 @@ public:
 
     //function returns the father of the node with the key or the last node that isnt null in the search route
     const T *findGreaterOrEqual(const K &key) const;
+
+private:
+    void updateHeight(Node *node);
+
+    const T *searchAux(const Node *cur, const K &key) const;
+
+    Node *insertAux(Node *node, const T &data, const K &key);
+
+    int toArray(Node *array);
+
+    Node *removeAux(Node *node, const K &key);
+
+    int toArrayAux(Node *node, K *array, int index);
+
+    auto rebalance(Node *node) -> Node *;
+
+    Node *createFromArrayAux(Node *curr, const Node *data, int begin, int end);
+
+    const Node *findGreaterOrEqualAux(const K &key, Node *current, Node *closest) const;
+
+    void copyUniqueElements(const Node *data_raw, int n_raw, Node *data);
+
+    int countUniqueElements(const Node *data_raw, int n_raw);
+
+    Node *root;
+    int n;
 };
 
 template<class T, class K>
