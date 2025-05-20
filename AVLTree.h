@@ -41,9 +41,9 @@ public:
 
     Node *getRoot() const;
 
-    int toArrayAux(Node *node, Node *array, int index);
+    int toArray(Node *array) const;
 
-    int toArray(K *array);
+    int toArray(K *array) const;
 
     const T *search(const K &key) const;
 
@@ -59,11 +59,11 @@ private:
 
     Node *insertAux(Node *node, const T &data, const K &key);
 
-    int toArray(Node *array);
-
     Node *removeAux(Node *node, const K &key);
 
-    int toArrayAux(Node *node, K *array, int index);
+    int toArrayAux(Node *node, Node *array, int index) const;
+
+    int toArrayAux(Node *node, K *array, int index) const;
 
     auto rebalance(Node *node) -> Node *;
 
@@ -97,7 +97,7 @@ void AVLTree<T, K>::updateHeight(Node *node) {
 
 
 template<class T, class K>
-AVLTree<T, K>::AVLTree() : root(nullptr) {
+AVLTree<T, K>::AVLTree() : root(nullptr), n(0) {
 }
 
 template<class T, class K>
@@ -192,12 +192,12 @@ auto AVLTree<T, K>::insertAux(Node *node, const T &data, const K &key) -> Node *
 }
 
 template<class T, class K>
-int AVLTree<T, K>::toArray(Node *array) {
+int AVLTree<T, K>::toArray(Node *array) const {
     return toArrayAux(root, array, 0);
 }
 
 template<class T, class K>
-int AVLTree<T, K>::toArrayAux(Node *node, Node *array, int index) {
+int AVLTree<T, K>::toArrayAux(Node *node, Node *array, int index) const {
     if (node == nullptr) {
         return index;
     }
@@ -209,12 +209,12 @@ int AVLTree<T, K>::toArrayAux(Node *node, Node *array, int index) {
 
 // as this function is primarily used for testing, it's ok to skip checking if the array is big enough
 template<class T, class K>
-int AVLTree<T, K>::toArray(K *array) {
+int AVLTree<T, K>::toArray(K *array) const {
     return toArrayAux(root, array, 0);
 }
 
 template<class T, class K>
-int AVLTree<T, K>::toArrayAux(Node *node, K *array, int index) {
+int AVLTree<T, K>::toArrayAux(Node *node, K *array, int index) const {
     if (node == nullptr) {
         return index;
     }
@@ -257,6 +257,8 @@ void AVLTree<T, K>::deleteTree(Node *head) {
     }
     deleteTree(head->left);
     deleteTree(head->right);
+    head->left = nullptr;
+    head->right = nullptr;
     delete head;
 }
 
@@ -389,7 +391,6 @@ void AVLTree<T, K>::mergeToArray(const AVLTree &another, Node *destination) cons
     // toArray returns a sorted array as it traverses inorder
     this->toArray(thisArr);
     another.toArray(anotherArr);
-    Array(anotherArr);
     int i = 0, j = 0;
     int resIndex = 0;
     while (i < this->getSize() && j < another.getSize()) {
