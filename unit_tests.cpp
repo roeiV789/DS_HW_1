@@ -187,16 +187,12 @@ void avl_tree_test_4() {
     assert(arr1[5] == 6);
     assert(arr1[6] == 7);
     delete[] arr1;
-    if (tree.search(2)) {
-        cout << "test 4: success" << endl;
-    } else {
-        cout << "test 4: failed" << endl;
-    }
-    if (tree.search(8)) {
-        cout << "test 4: failed" << endl;
-    } else {
-        cout << "test 4: success" << endl;
-    }
+    bool found1;
+    tree.search(2, found1);
+    assert(found1 == true);
+    bool found2;
+    tree.search(8, found2);
+    assert(found2 == false);
 }
 
 void avl_tree_test_5() {

@@ -50,7 +50,7 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId) {
         return StatusType::INVALID_INPUT;
     }
 
-    if (!playlistTree.found(playlistId)) {
+    if (!playlistTree.found(playlistId) || !songTree.found(songId)) {
         return StatusType::FAILURE;
     }
 
@@ -62,8 +62,9 @@ StatusType DSpotify::delete_song(int songId) {
         return StatusType::INVALID_INPUT;
     }
     try {
-        auto res = songTree.search(songId);
-        if ((*res)->getPlaylistCount() == 0) {
+        bool found;
+        auto res = songTree.search(songId, found);
+        if (found && res->getPlaylistCount() == 0) {
             songTree.remove(songId);
             return StatusType::SUCCESS;
         }
@@ -82,9 +83,10 @@ output_t<int> DSpotify::get_plays(int songId) {
         return StatusType::INVALID_INPUT;
     }
     try {
-        auto res = songTree.search(songId);
-        if (res) {
-            return output_t<int>((*res)->getPlays());
+        bool found;
+        auto res = songTree.search(songId, found);
+        if (found) {
+            return output_t<int>(res->getPlays());
         }
         return StatusType::FAILURE;
     } catch (const std::bad_alloc &e) {
@@ -101,11 +103,12 @@ output_t<int> DSpotify::get_by_plays(int playlistId, int plays) {
         return StatusType::INVALID_INPUT;
     }
     try {
-        auto res = playlistTree.search(playlistId);
-        if (!res) {
+        bool found;
+        auto res = playlistTree.search(playlistId, found);
+        if (!found) {
             return StatusType::FAILURE;
         }
-        int closestPlays = (*res)->get_song_by_plays(plays);
+        int closestPlays = res->get_song_by_plays(plays);
         if (closestPlays < 0) {
             return StatusType::FAILURE;
         }

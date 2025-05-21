@@ -31,8 +31,9 @@ void Playlist::addSong(const shared_ptr<Song> &song) {
 }
 
 void Playlist::removeSong(int songId) {
-    shared_ptr<Song> song = *songs.search(songId);
-    if (song) {
+    bool found;
+    shared_ptr<Song> song = songs.search(songId, found);
+    if (found) {
         songs.remove(songId);
         playsTree.remove(PlaysKey(song->getPlays(), songId));
         song->setPlaylistCount(song->getPlaylistCount() - 1);
