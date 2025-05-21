@@ -31,6 +31,8 @@ void dspotify_test_4();
 
 void dspotify_test_5();
 
+void dspotify_test_6();
+
 int main() {
     // AVLTree tests
     avl_tree_test_1();
@@ -47,6 +49,7 @@ int main() {
     dspotify_test_3();
     dspotify_test_4();
     dspotify_test_5();
+    dspotify_test_6();
     cout << "ALL TESTS PASSED" << endl;
     return 0;
 }
@@ -446,4 +449,35 @@ void dspotify_test_5() {
     assert(d.get_by_plays(PLAYLIST_ID1,4).ans()==6);
 
 
+}
+//this test checks remove_from_playlist
+void dspotify_test_6() {
+    DSpotify d;
+    const int PLAYLIST_ID1 = 100;
+    const int PLAYLIST_ID2 = 200;
+    const int PLAYLIST_ID3 = 300;
+    d.add_playlist(PLAYLIST_ID1);
+    d.add_playlist(PLAYLIST_ID2);
+    d.add_playlist(PLAYLIST_ID3);
+    d.add_song(10,20);
+    d.add_song(11,21);
+    d.add_song(12,22);
+    d.add_song(13,22);
+    d.add_song(14,22);
+    d.add_song(15,23);
+    d.add_to_playlist(PLAYLIST_ID1,10);
+    d.add_to_playlist(PLAYLIST_ID2,11);
+    d.add_to_playlist(PLAYLIST_ID2,12);
+    d.add_to_playlist(PLAYLIST_ID2,13);
+    d.add_to_playlist(PLAYLIST_ID2,14);
+    d.add_to_playlist(PLAYLIST_ID3,15);
+    assert(d.remove_from_playlist(PLAYLIST_ID1,10)==StatusType::SUCCESS);
+    assert(d.get_num_songs(PLAYLIST_ID1).ans()==0);
+    assert(d.delete_playlist(PLAYLIST_ID1)==StatusType::SUCCESS);
+    d.remove_from_playlist(PLAYLIST_ID2,11);
+    assert(d.get_num_songs(PLAYLIST_ID2).ans()==3);
+    assert(d.remove_from_playlist(PLAYLIST_ID1,10)==StatusType::FAILURE);
+    assert(d.remove_from_playlist(PLAYLIST_ID2,15)==StatusType::FAILURE);
+    assert(d.remove_from_playlist(0,15)==StatusType::INVALID_INPUT);
+    assert(d.remove_from_playlist(PLAYLIST_ID3,0)==StatusType::INVALID_INPUT);
 }
