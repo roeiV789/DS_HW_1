@@ -41,6 +41,15 @@ void Playlist::removeSong(int songId) {
     }
 }
 
+
+const AVLTree<shared_ptr<Song>, int> &Playlist::getSongsTree() const {
+    return songs;
+}
+
+const AVLTree<int, PlaysKey> &Playlist::getPlaysTree() const {
+    return playsTree;
+}
+
 bool Playlist::isInPlaylist(int songId) const {
     return this->songs.found(songId);
 }
@@ -54,4 +63,60 @@ int Playlist::get_song_by_plays(int plays) const {
     bool found = false;
     int songId = playsTree.findGreaterOrEqual(key, found);
     return found ? songId : -1;
+}
+
+void Playlist::decreasePlaylistCount(SongNode *node) {
+    if (node == nullptr) {
+        return;
+    }
+    shared_ptr<Song> song = node->data;
+    if (song != nullptr) {
+        song->setPlaylistCount(song->getPlaylistCount() - 1);
+    }
+    decreasePlaylistCount(node->left);
+    decreasePlaylistCount(node->right);
+}
+
+void Playlist::releaseAllMemory() {
+    this->songs.deleteTree(songs.getRoot());
+    this->playsTree.deleteTree(playsTree.getRoot());
+}
+
+void Playlist::mergeIntoThis(Playlist *other) {
+    if (other->size == 0) {
+        return;
+    }
+    uniteSongs(this->songs, other->songs);
+    unitePlays(this->playsTree, other->playsTree);
+    this->size = this->songs.getSize();
+    other->decreasePlaylistCount(other->getSongsTree().getRoot());
+    other->releaseAllMemory();
+}
+
+void Playlist::uniteSongs(AVLTree<shared_ptr<Song>, int> &songTree1, const AVLTree<shared_ptr<Song>, int> &songTree2) {
+    int n = songTree1.getSize() + songTree2.getSize();
+    auto data = new SongNode[n];
+    for (int i = 0; i < n; i++) {
+        data[i] = SongNode(nullptr, -1);
+    }
+    songTree1.mergeToArray(songTree2, data);
+    int size = 0;
+    while (data[size].key != -1 || size < n) {
+        size++;
+    }
+    songTree1.recreateFromArray(data, size);
+}
+
+void Playlist::unitePlays(AVLTree<int, PlaysKey> &playsTree1, const AVLTree<int, PlaysKey> &playsTree2) {
+    int n = playsTree1.getSize() + playsTree2.getSize();
+    auto data = new PlaysNode[n];
+    for (int i = 0; i < n; i++) {
+        data[i] = PlaysNode(-1, PlaysKey());
+    }
+    playsTree1.mergeToArray(playsTree2, data);
+    int size = 0;
+    while (data[size].data != -1 || size < n) {
+        size++;
+    }
+    playsTree1.recreateFromArray(data, size);
 }

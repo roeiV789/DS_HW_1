@@ -26,7 +26,21 @@ StatusType DSpotify::add_playlist(int playlistId) {
 }
 
 StatusType DSpotify::delete_playlist(int playlistId) {
-    return StatusType::FAILURE;
+    if (playlistId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    bool found;
+    auto playlist = playlistTree.search(playlistId, found);
+    if (!found || playlist->getSize() > 0) {
+        return StatusType::FAILURE;
+    }
+
+    try {
+        playlistTree.remove(playlistId);
+    } catch (const std::bad_alloc &e) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+    return StatusType::SUCCESS;
 }
 
 StatusType DSpotify::add_song(int songId, int plays) {
@@ -105,7 +119,7 @@ output_t<int> DSpotify::get_plays(int songId) {
 }
 
 output_t<int> DSpotify::get_num_songs(int playlistId) {
-    return 0;
+    return songTree.getSize();
 }
 
 output_t<int> DSpotify::get_by_plays(int playlistId, int plays) {
@@ -129,5 +143,22 @@ output_t<int> DSpotify::get_by_plays(int playlistId, int plays) {
 }
 
 StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2) {
-    return StatusType::FAILURE;
+    if (playlistId1 <= 0 || playlistId2 <= 0 || playlistId1 == playlistId2) {
+        return StatusType::INVALID_INPUT;
+    }
+
+    bool found;
+    auto playlist1 = playlistTree.search(playlistId1, found);
+    if (!found)
+        return StatusType::FAILURE;
+    auto playlist2 = playlistTree.search(playlistId2, found);
+    if (!found)
+        return StatusType::FAILURE;
+    try {
+        playlist1->mergeIntoThis(playlist2);
+        delete_playlist(playlistId2);
+    } catch (const std::bad_alloc &e) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+    return StatusType::SUCCESS;
 }

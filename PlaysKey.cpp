@@ -1,19 +1,24 @@
 #include "PlaysKey.h"
 
-PlaysKey::PlaysKey(int plays, int songId) : plays(plays), songId(songId){}
+PlaysKey::PlaysKey(int plays, int songId) : plays(plays), songId(songId) {
+}
 
 bool PlaysKey::operator<(const PlaysKey &other) const {
-    if(plays<other.getPlays()) {
+    if (plays < other.getPlays()) {
         return true;
     }
-    if(plays>other.getPlays()) {
+    if (plays > other.getPlays()) {
         return false;
     }
-    return songId<other.getSongId();
+    return songId < other.getSongId();
+}
+
+bool PlaysKey::operator>(const PlaysKey &other) const {
+    return !(other < *this) && !(*this == other);
 }
 
 bool PlaysKey::operator==(const PlaysKey &other) const {
-    return plays==other.plays && songId==other.songId;
+    return plays == other.plays && songId == other.songId;
 }
 
 int PlaysKey::getPlays() const {

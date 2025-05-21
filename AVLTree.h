@@ -360,6 +360,8 @@ auto AVLTree<T, K>::removeAux(Node *node, const K &key) -> Node * {
 
 // this function modifies destination to be a SORTED array of UNIQUE elements.
 // it modifies first n(this) + n(another) elements of destination and leaves rest of the elements unchanged
+
+// as this function is symmetric, it honestly should be a static function of a class that takes 2 trees
 template<class T, class K>
 void AVLTree<T, K>::mergeToArray(const AVLTree &another, Node *destination) const {
     Node *thisArr = new Node[this->getSize()];

@@ -15,12 +15,11 @@
 using namespace std;
 #include "wet1util.h"
 #include "Playlist.h"
+
 class DSpotify {
 private:
-    AVLTree<shared_ptr<Song>,int> songTree;
-    AVLTree<Playlist*,int> playlistTree;
-
-    
+    AVLTree<shared_ptr<Song>, int> songTree;
+    AVLTree<Playlist *, int> playlistTree;
 public:
     // <DO-NOT-MODIFY> {
     DSpotify();
@@ -46,6 +45,7 @@ public:
     output_t<int> get_by_plays(int playlistId, int plays);
 
     StatusType unite_playlists(int playlistId1, int playlistId2);
+
     // } </DO-NOT-MODIFY>
 };
 
