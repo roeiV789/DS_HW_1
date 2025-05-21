@@ -29,6 +29,7 @@ void dspotify_test_3();
 
 void dspotify_test_4();
 
+void dspotify_test_5();
 
 int main() {
     // AVLTree tests
@@ -45,6 +46,7 @@ int main() {
     dspotify_test_2();
     dspotify_test_3();
     dspotify_test_4();
+    dspotify_test_5();
     cout << "ALL TESTS PASSED" << endl;
     return 0;
 }
@@ -410,5 +412,38 @@ void dspotify_test_4() {
     assert(d.get_num_songs(PLAYLIST_ID3).ans()==0);
     d.add_to_playlist(PLAYLIST_ID2,5);
     assert(d.get_num_songs(PLAYLIST_ID2).ans()==1);
+
+}
+void dspotify_test_5() {
+    DSpotify d;
+    const int PLAYLIST_ID1 = 10;
+    const int PLAYLIST_ID2 = 20;
+    const int PLAYLIST_ID3 = 30;
+    d.add_playlist(PLAYLIST_ID1);
+    d.add_playlist(PLAYLIST_ID2);
+    d.add_playlist(PLAYLIST_ID3);
+    d.add_song(1,1);
+    d.add_song(2,2);
+    d.add_song(3,3);
+    d.add_song(4,3);
+    d.add_song(5,3);
+    d.add_to_playlist(PLAYLIST_ID1,1);
+    d.add_to_playlist(PLAYLIST_ID1,2);
+    d.add_to_playlist(PLAYLIST_ID1,3);
+    d.add_to_playlist(PLAYLIST_ID1,4);
+    d.add_to_playlist(PLAYLIST_ID1,5);
+    //checking get_by_plays functionality
+    assert(d.get_by_plays(PLAYLIST_ID1,3).ans()==3);
+    assert(d.get_by_plays(PLAYLIST_ID1,3).status()==StatusType::SUCCESS);
+    assert(d.get_by_plays(PLAYLIST_ID1,4).status()==StatusType::FAILURE);
+    assert(d.get_by_plays(40,3).status()==StatusType::FAILURE);
+    assert(d.get_by_plays(PLAYLIST_ID1,2).ans()==2);
+    assert(d.get_by_plays(0,3).status()==StatusType::INVALID_INPUT);
+    assert(d.get_by_plays(PLAYLIST_ID1,-1).status()==StatusType::INVALID_INPUT);
+    d.add_song(6,4);
+    d.add_to_playlist(PLAYLIST_ID1,6);
+    assert(d.get_by_plays(PLAYLIST_ID1,4).status()==StatusType::SUCCESS);
+    assert(d.get_by_plays(PLAYLIST_ID1,4).ans()==6);
+
 
 }
