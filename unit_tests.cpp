@@ -23,6 +23,9 @@ void avl_tree_test_7();
 
 void dspotify_test_1();
 
+void dspotify_test_2();
+
+
 int main() {
     // AVLTree tests
     avl_tree_test_1();
@@ -35,6 +38,7 @@ int main() {
 
     // DSpotify tests
     dspotify_test_1();
+    dspotify_test_2();
     cout << "ALL TESTS PASSED" << endl;
     return 0;
 }
@@ -306,4 +310,41 @@ void dspotify_test_1() {
     assert(d.get_by_plays(PLAYLIST_ID, 13).ans() == 2);
     assert(d.get_by_plays(PLAYLIST_ID, 15).ans() == 2);
     assert(d.get_by_plays(PLAYLIST_ID, 16).status() == StatusType::FAILURE);
+}
+
+void dspotify_test_2() {
+    DSpotify d;
+    const int PLAYLIST_ID1 = 10;
+    const int PLAYLIST_ID2 = 20;
+    const int PLAYLIST_ID3 = 30;
+    d.add_playlist(PLAYLIST_ID1);
+    d.add_playlist(PLAYLIST_ID2);
+    d.add_playlist(PLAYLIST_ID3);
+    //checking add_playlist functionality - trying to add a playlist that already exists
+    assert(d.add_playlist(PLAYLIST_ID1)==StatusType::FAILURE);
+    assert(d.add_playlist(-1)==StatusType::INVALID_INPUT);
+    //checking add song functionality
+    d.add_song(1,1);
+    d.add_song(2,2);
+    d.add_song(3,3);
+    d.add_song(4,3);
+    d.add_song(5,3);
+    assert(d.add_song(6,3)==StatusType::SUCCESS);
+    assert(d.add_song(5,4)==StatusType::FAILURE);
+    assert(d.add_song(8,-1)==StatusType::INVALID_INPUT);
+    assert(d.add_song(0,5)==StatusType::INVALID_INPUT);
+    //checking delete playlist functionality
+    assert(d.delete_playlist(-1)==StatusType::INVALID_INPUT);
+    assert(d.delete_playlist(PLAYLIST_ID1)==StatusType::SUCCESS);
+    assert(d.delete_playlist(PLAYLIST_ID1)==StatusType::FAILURE);
+    d.add_to_playlist(PLAYLIST_ID2,1);
+    assert(d.delete_playlist(PLAYLIST_ID2)==StatusType::FAILURE);
+    //checking delete song functionality
+    assert(d.delete_song(1)==StatusType::FAILURE);
+    assert(d.delete_song(2)==StatusType::SUCCESS);
+    assert(d.delete_song(0)==StatusType::INVALID_INPUT);
+
+
+
+
 }
