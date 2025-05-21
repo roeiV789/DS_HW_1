@@ -410,5 +410,5 @@ void dspotify_test_4() {
     assert(d.get_num_songs(PLAYLIST_ID3).ans()==0);
     d.add_to_playlist(PLAYLIST_ID2,5);
     assert(d.get_num_songs(PLAYLIST_ID2).ans()==1);
-    
+
 }

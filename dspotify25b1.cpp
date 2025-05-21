@@ -110,7 +110,7 @@ output_t<int> DSpotify::get_plays(int songId) {
         bool found;
         auto res = songTree.search(songId, found);
         if (found) {
-            return output_t<int>(res->getPlays());
+            return res->getPlays();
         }
         return StatusType::FAILURE;
     } catch (const std::bad_alloc &e) {
@@ -149,7 +149,7 @@ output_t<int> DSpotify::get_by_plays(int playlistId, int plays) {
         if (closestPlays < 0) {
             return StatusType::FAILURE;
         }
-        return output_t<int>(closestPlays);
+        return closestPlays;
     } catch (const std::bad_alloc &e) {
         return StatusType::ALLOCATION_ERROR;
     }
