@@ -25,6 +25,8 @@ void dspotify_test_1();
 
 void dspotify_test_2();
 
+void dspotify_test_3();
+
 
 int main() {
     // AVLTree tests
@@ -39,6 +41,7 @@ int main() {
     // DSpotify tests
     dspotify_test_1();
     dspotify_test_2();
+    dspotify_test_3();
     cout << "ALL TESTS PASSED" << endl;
     return 0;
 }
@@ -343,8 +346,32 @@ void dspotify_test_2() {
     assert(d.delete_song(1)==StatusType::FAILURE);
     assert(d.delete_song(2)==StatusType::SUCCESS);
     assert(d.delete_song(0)==StatusType::INVALID_INPUT);
-
-
-
+}
+void dspotify_test_3() {
+    DSpotify d;
+    const int PLAYLIST_ID1 = 10;
+    const int PLAYLIST_ID2 = 20;
+    const int PLAYLIST_ID3 = 30;
+    d.add_playlist(PLAYLIST_ID1);
+    d.add_playlist(PLAYLIST_ID2);
+    d.add_playlist(PLAYLIST_ID3);
+    d.add_song(1,1);
+    d.add_song(2,2);
+    d.add_song(3,3);
+    d.add_song(4,3);
+    d.add_song(5,3);
+    //checking add_to_playlist functionality
+    assert(d.add_to_playlist(PLAYLIST_ID1,1)==StatusType::SUCCESS);
+    assert(d.add_to_playlist(PLAYLIST_ID1,2)==StatusType::SUCCESS);
+    assert(d.add_to_playlist(PLAYLIST_ID1,3)==StatusType::SUCCESS);
+    assert(d.add_to_playlist(PLAYLIST_ID1,4)==StatusType::SUCCESS);
+    assert(d.add_to_playlist(PLAYLIST_ID1,1)==StatusType::FAILURE);
+    assert(d.add_to_playlist(0,1)==StatusType::INVALID_INPUT);
+    assert(d.add_to_playlist(1,0)==StatusType::INVALID_INPUT);
+    //checking it doesnt have a problem adding a song to two different playlists
+    assert(d.add_to_playlist(PLAYLIST_ID2,1)==StatusType::SUCCESS);
+    //checking that delete song cant delete songs that have been added
+    assert(d.delete_song(1)==StatusType::FAILURE);
+    assert(d.delete_song(5)==StatusType::SUCCESS);
 
 }
