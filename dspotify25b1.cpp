@@ -50,11 +50,21 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId) {
         return StatusType::INVALID_INPUT;
     }
 
-    if (!playlistTree.found(playlistId) || !songTree.found(songId)) {
+    bool found;
+    auto song = songTree.search(songId, found);
+    auto playlist = playlistTree.search(playlistId, found);
+    if (!found) {
         return StatusType::FAILURE;
     }
+    if (playlist->isInPlaylist(songId))
+        return StatusType::FAILURE;
 
-    return StatusType::FAILURE;
+    try {
+        playlist->addSong(song);
+    } catch (const std::bad_alloc &e) {
+        return StatusType::ALLOCATION_ERROR;
+    }
+    return StatusType::SUCCESS;
 }
 
 StatusType DSpotify::delete_song(int songId) {

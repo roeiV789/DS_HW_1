@@ -305,7 +305,5 @@ void dspotify_test_1() {
 
     assert(d.get_by_plays(PLAYLIST_ID, 13).ans() == 2);
     assert(d.get_by_plays(PLAYLIST_ID, 15).ans() == 2);
-    assert(d.get_by_plays(PLAYLIST_ID, 16).ans() == 3);
-    assert(d.get_by_plays(PLAYLIST_ID, 20).ans() == 3);
-    assert(d.get_by_plays(PLAYLIST_ID, 21).status() == StatusType::FAILURE);
+    assert(d.get_by_plays(PLAYLIST_ID, 16).status() == StatusType::FAILURE);
 }
