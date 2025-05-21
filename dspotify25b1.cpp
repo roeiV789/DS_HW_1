@@ -119,7 +119,20 @@ output_t<int> DSpotify::get_plays(int songId) {
 }
 
 output_t<int> DSpotify::get_num_songs(int playlistId) {
-    return songTree.getSize();
+    if(playlistId<=0) {
+        return StatusType::INVALID_INPUT;
+    }
+    try {
+        bool found;
+        auto res = playlistTree.search(playlistId, found);
+        if (found) {
+            return res->getSize();
+        }
+        return StatusType::FAILURE;
+    }
+    catch(const std::bad_alloc& e) {
+        return StatusType::ALLOCATION_ERROR;
+    }
 }
 
 output_t<int> DSpotify::get_by_plays(int playlistId, int plays) {
