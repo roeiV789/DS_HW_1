@@ -78,8 +78,9 @@ void Playlist::decreasePlaylistCount(SongNode *node) {
 }
 
 void Playlist::releaseAllMemory() {
-    this->songs.deleteTree(songs.getRoot());
-    this->playsTree.deleteTree(playsTree.getRoot());
+    songs.deleteTree(songs.getRoot());
+    playsTree.deleteTree(playsTree.getRoot());
+    size = 0;
 }
 
 void Playlist::mergeIntoThis(Playlist *other) {
