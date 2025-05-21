@@ -70,7 +70,7 @@ private:
 
     Node *createFromArrayAux(Node *curr, const Node *data, int begin, int end);
 
-    auto findGreaterOrEqualAux(const K &key, Node *current, Node *closest) -> Node * const;
+    auto findGreaterOrEqualAux(const K &key, Node *current, Node *closest) const -> Node * ;
 
     Node *root;
     int n;
@@ -397,7 +397,7 @@ T AVLTree<T, K>::findGreaterOrEqual(const K &key, bool &found) const {
 template<class T, class K>
 auto AVLTree<T, K>::findGreaterOrEqualAux(const K &key,
                                           Node *current,
-                                          Node *closest) -> Node * const {
+                                          Node *closest) const -> Node * {
     if (!current) {
         return closest;
     }
