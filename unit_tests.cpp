@@ -1,5 +1,7 @@
 #include <cassert>
 #include <iostream>
+
+#include "dspotify25b1.h"
 using namespace std;
 #include "AVLTree.h"
 #define DUMMY_DATA 0
@@ -19,7 +21,10 @@ void avl_tree_test_6();
 
 void avl_tree_test_7();
 
+void dspotify_test_1();
+
 int main() {
+    // AVLTree tests
     avl_tree_test_1();
     avl_tree_test_2();
     avl_tree_test_3();
@@ -27,6 +32,9 @@ int main() {
     avl_tree_test_5();
     avl_tree_test_6();
     avl_tree_test_7();
+
+    // DSpotify tests
+    dspotify_test_1();
     cout << "ALL TESTS PASSED" << endl;
     return 0;
 }
@@ -284,4 +292,24 @@ void avl_tree_test_7() {
     assert(arr1[2] == 3);
     assert(arr1[3] == 4);
     assert(arr1[4] == 5);
+}
+
+void dspotify_test_1() {
+    DSpotify d;
+    const int PLAYLIST_ID = 42;
+    d.add_playlist(PLAYLIST_ID);
+    d.add_song(1, 10);
+    d.add_song(2, 15);
+    d.add_song(3, 20);
+    d.add_song(4, 15);
+
+    d.add_to_playlist(PLAYLIST_ID, 1);
+    d.add_to_playlist(PLAYLIST_ID, 2);
+    d.add_to_playlist(PLAYLIST_ID, 4);
+
+    assert(d.get_by_plays(PLAYLIST_ID, 13).ans() == 2);
+    assert(d.get_by_plays(PLAYLIST_ID, 15).ans() == 2);
+    assert(d.get_by_plays(PLAYLIST_ID, 16).ans() == 3);
+    assert(d.get_by_plays(PLAYLIST_ID, 20).ans() == 3);
+    assert(d.get_by_plays(PLAYLIST_ID, 21).status() == StatusType::FAILURE);
 }
