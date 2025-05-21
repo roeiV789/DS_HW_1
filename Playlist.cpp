@@ -1,5 +1,7 @@
 #include "Playlist.h"
-Playlist::Playlist(int playlistId) : playlistId(playlistId), size(0){}
+
+Playlist::Playlist(int playlistId) : playlistId(playlistId), size(0) {
+}
 
 Playlist::~Playlist() {
     songs.deleteTree(songs.getRoot());
@@ -39,7 +41,7 @@ void Playlist::removeSong(int songId) {
 }
 
 bool Playlist::isInPlaylist(int songId) const {
-    return this->songs.search(songId) != nullptr;
+    return this->songs.found(songId);
 }
 
 //returns the song id of the song with the same number of plays or greater with id as a tie breaker

@@ -22,6 +22,8 @@ public:
 
     ~AVLTree();
 
+    bool found(const K &key) const;
+
     void mergeToArray(const AVLTree &another, Node *destination) const;
 
     void remove(const K &key);
@@ -70,7 +72,7 @@ private:
 
     Node *createFromArrayAux(Node *curr, const Node *data, int begin, int end);
 
-    auto findGreaterOrEqualAux(const K &key, Node *current, Node *closest) const -> Node * ;
+    auto findGreaterOrEqualAux(const K &key, Node *current, Node *closest) const -> Node *;
 
     Node *root;
     int n;
@@ -125,6 +127,11 @@ template<class T, class K>
 AVLTree<T, K>::~AVLTree() {
     deleteTree(root);
     root = nullptr;
+}
+
+template<class T, class K>
+bool AVLTree<T, K>::found(const K &key) const {
+    return searchAux(root, key) != nullptr;
 }
 
 template<class T, class K>
