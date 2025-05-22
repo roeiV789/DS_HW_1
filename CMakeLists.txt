@@ -19,4 +19,5 @@ add_executable(HW1
         playlist.cpp playlist.h
         playskey.h playskey.cpp
         song.h song.cpp
+        debug.h
 )
