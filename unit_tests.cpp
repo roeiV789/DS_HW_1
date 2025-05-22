@@ -35,6 +35,8 @@ void dspotify_test_6();
 
 void dspotify_test_7();
 
+void dspotify_test_8();
+
 int run_unit_tests() {
     // AVLTree tests
     avl_tree_test_1();
@@ -53,6 +55,7 @@ int run_unit_tests() {
     dspotify_test_5();
     dspotify_test_6();
     dspotify_test_7();
+    dspotify_test_8();
     cout << "ALL TESTS PASSED" << endl;
     return 0;
 }
@@ -484,7 +487,7 @@ void dspotify_test_6() {
     assert(d.remove_from_playlist(PLAYLIST_ID3,0)==StatusType::INVALID_INPUT);
 }
 
-//this test checks unite_playlists
+// unite_playlists test 1: basic test + playlists do not intersect
 void dspotify_test_7() {
     DSpotify d;
     const int PLAYLIST_ID1 = 100;
@@ -526,4 +529,46 @@ void dspotify_test_7() {
     assert(d.unite_playlists(PLAYLIST_ID6,PLAYLIST_ID1)==StatusType::SUCCESS);
     assert(d.get_num_songs(PLAYLIST_ID6).ans()==5);
     assert(d.get_num_songs(PLAYLIST_ID1).status()==StatusType::FAILURE); //playlist deleted so should return failure
+}
+
+// unite_playlists test 2: playlists can intersect
+void dspotify_test_8() {
+    DSpotify d;
+    const int PLAYLIST_ID1 = 100;
+    const int PLAYLIST_ID2 = 200;
+    const int PLAYLIST_ID3 = 300;
+    d.add_playlist(PLAYLIST_ID1);
+    d.add_playlist(PLAYLIST_ID2);
+    d.add_playlist(PLAYLIST_ID3);
+    d.add_song(10, 20);
+    d.add_song(11, 21);
+    d.add_song(12, 22);
+    d.add_song(13, 22);
+    d.add_song(14, 22);
+    d.add_song(15, 23);
+    d.add_song(16, 22);
+    d.add_song(17, 23);
+    d.add_to_playlist(PLAYLIST_ID1, 10);
+    d.add_to_playlist(PLAYLIST_ID1, 11);
+    d.add_to_playlist(PLAYLIST_ID1, 12);
+    d.add_to_playlist(PLAYLIST_ID1, 13);
+    d.add_to_playlist(PLAYLIST_ID2, 13);
+    d.add_to_playlist(PLAYLIST_ID2, 14);
+    d.add_to_playlist(PLAYLIST_ID2, 15);
+    d.add_to_playlist(PLAYLIST_ID3, 14);
+    d.add_to_playlist(PLAYLIST_ID3, 15);
+    d.add_to_playlist(PLAYLIST_ID3, 16);
+    d.add_to_playlist(PLAYLIST_ID3, 17);
+
+    assert(d.unite_playlists(PLAYLIST_ID1,PLAYLIST_ID2)==StatusType::SUCCESS);
+    assert(d.get_num_songs(PLAYLIST_ID1).ans()==6);
+    assert(d.get_num_songs(PLAYLIST_ID2).status()==StatusType::FAILURE);
+    assert(d.add_playlist(PLAYLIST_ID2) == StatusType::SUCCESS);
+    assert(d.get_num_songs(PLAYLIST_ID2).ans()==0);
+    assert(d.unite_playlists(PLAYLIST_ID2,PLAYLIST_ID1)==StatusType::SUCCESS);
+    assert(d.get_num_songs(PLAYLIST_ID1).status()==StatusType::FAILURE);
+    assert(d.get_num_songs(PLAYLIST_ID2).ans()==6);
+    assert(d.unite_playlists(PLAYLIST_ID2,PLAYLIST_ID3)==StatusType::SUCCESS);
+    assert(d.get_num_songs(PLAYLIST_ID2).ans()==8);
+    assert(d.get_num_songs(PLAYLIST_ID3).status()==StatusType::FAILURE);
 }
