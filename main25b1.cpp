@@ -22,7 +22,6 @@ void run_unit_tests();
 int main() {
 #ifndef NDEBUG
     run_unit_tests();
-    return 0;
 #endif
 
 
