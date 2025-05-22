@@ -14,7 +14,6 @@ add_executable(HW1
         unit_tests.cpp
         AVLTree.h
         wet1util.h
-        # uncomment if needed
         main25b1.cpp
         dspotify25b1.cpp dspotify25b1.cpp
         playlist.cpp playlist.h

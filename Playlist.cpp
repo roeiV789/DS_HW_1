@@ -120,4 +120,5 @@ void Playlist::unitePlays(AVLTree<int, PlaysKey> &playsTree1, const AVLTree<int,
         size++;
     }
     playsTree1.recreateFromArray(data, size);
+    delete[] data;
 }
