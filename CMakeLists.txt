@@ -11,11 +11,10 @@ add_compile_options(-Wall) # -Wall
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(HW1
-        unit_tests.cpp
+        #unit_tests.cpp
         AVLTree.h
         wet1util.h
-        # uncomment if needed
-#        main25b1.cpp
+        main25b1.cpp
         dspotify25b1.cpp dspotify25b1.cpp
         playlist.cpp playlist.h
         playskey.h playskey.cpp
