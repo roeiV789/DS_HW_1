@@ -35,7 +35,7 @@ void dspotify_test_6();
 
 void dspotify_test_7();
 
-int main() {
+int run_unit_tests() {
     // AVLTree tests
     avl_tree_test_1();
     avl_tree_test_2();

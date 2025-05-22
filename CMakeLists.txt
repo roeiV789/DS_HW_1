@@ -15,7 +15,7 @@ add_executable(HW1
         AVLTree.h
         wet1util.h
         # uncomment if needed
-#        main25b1.cpp
+        main25b1.cpp
         dspotify25b1.cpp dspotify25b1.cpp
         playlist.cpp playlist.h
         playskey.h playskey.cpp
