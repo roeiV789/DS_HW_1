@@ -102,7 +102,7 @@ void Playlist::uniteSongs(AVLTree<shared_ptr<Song>, int> &songTree1, const AVLTr
     }
     songTree1.mergeToArray(songTree2, data);
     int size = 0;
-    while (data[size].key != -1 || size < n) {
+    while (data[size].key != -1 && size < n) {
         size++;
     }
     songTree1.recreateFromArray(data, size);
@@ -116,7 +116,7 @@ void Playlist::unitePlays(AVLTree<int, PlaysKey> &playsTree1, const AVLTree<int,
     }
     playsTree1.mergeToArray(playsTree2, data);
     int size = 0;
-    while (data[size].data != -1 || size < n) {
+    while (data[size].data != -1 && size < n) {
         size++;
     }
     playsTree1.recreateFromArray(data, size);
