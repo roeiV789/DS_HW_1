@@ -338,11 +338,11 @@ void dspotify_test_2() {
     assert(d.add_playlist(PLAYLIST_ID1)==StatusType::FAILURE);
     assert(d.add_playlist(-1)==StatusType::INVALID_INPUT);
     //checking add song functionality
-    d.add_song(1,1);
-    d.add_song(2,2);
-    d.add_song(3,3);
-    d.add_song(4,3);
-    d.add_song(5,3);
+    d.add_song(1, 1);
+    d.add_song(2, 2);
+    d.add_song(3, 3);
+    d.add_song(4, 3);
+    d.add_song(5, 3);
     assert(d.add_song(6,3)==StatusType::SUCCESS);
     assert(d.add_song(5,4)==StatusType::FAILURE);
     assert(d.add_song(8,-1)==StatusType::INVALID_INPUT);
@@ -351,13 +351,14 @@ void dspotify_test_2() {
     assert(d.delete_playlist(-1)==StatusType::INVALID_INPUT);
     assert(d.delete_playlist(PLAYLIST_ID1)==StatusType::SUCCESS);
     assert(d.delete_playlist(PLAYLIST_ID1)==StatusType::FAILURE);
-    d.add_to_playlist(PLAYLIST_ID2,1);
+    d.add_to_playlist(PLAYLIST_ID2, 1);
     assert(d.delete_playlist(PLAYLIST_ID2)==StatusType::FAILURE);
     //checking delete song functionality
     assert(d.delete_song(1)==StatusType::FAILURE);
     assert(d.delete_song(2)==StatusType::SUCCESS);
     assert(d.delete_song(0)==StatusType::INVALID_INPUT);
 }
+
 void dspotify_test_3() {
     DSpotify d;
     const int PLAYLIST_ID1 = 10;
@@ -366,11 +367,11 @@ void dspotify_test_3() {
     d.add_playlist(PLAYLIST_ID1);
     d.add_playlist(PLAYLIST_ID2);
     d.add_playlist(PLAYLIST_ID3);
-    d.add_song(1,1);
-    d.add_song(2,2);
-    d.add_song(3,3);
-    d.add_song(4,3);
-    d.add_song(5,3);
+    d.add_song(1, 1);
+    d.add_song(2, 2);
+    d.add_song(3, 3);
+    d.add_song(4, 3);
+    d.add_song(5, 3);
     //checking add_to_playlist functionality
     assert(d.add_to_playlist(PLAYLIST_ID1,1)==StatusType::SUCCESS);
     assert(d.add_to_playlist(PLAYLIST_ID1,2)==StatusType::SUCCESS);
@@ -384,7 +385,6 @@ void dspotify_test_3() {
     //checking that delete song cant delete songs that have been added
     assert(d.delete_song(1)==StatusType::FAILURE);
     assert(d.delete_song(5)==StatusType::SUCCESS);
-
 }
 
 void dspotify_test_4() {
@@ -395,15 +395,15 @@ void dspotify_test_4() {
     d.add_playlist(PLAYLIST_ID1);
     d.add_playlist(PLAYLIST_ID2);
     d.add_playlist(PLAYLIST_ID3);
-    d.add_song(1,1);
-    d.add_song(2,2);
-    d.add_song(3,3);
-    d.add_song(4,3);
-    d.add_song(5,3);
-    d.add_to_playlist(PLAYLIST_ID1,1);
-    d.add_to_playlist(PLAYLIST_ID1,2);
-    d.add_to_playlist(PLAYLIST_ID1,3);
-    d.add_to_playlist(PLAYLIST_ID1,4);
+    d.add_song(1, 1);
+    d.add_song(2, 2);
+    d.add_song(3, 3);
+    d.add_song(4, 3);
+    d.add_song(5, 3);
+    d.add_to_playlist(PLAYLIST_ID1, 1);
+    d.add_to_playlist(PLAYLIST_ID1, 2);
+    d.add_to_playlist(PLAYLIST_ID1, 3);
+    d.add_to_playlist(PLAYLIST_ID1, 4);
     //checking get_plays functionality
     assert(d.get_plays(1).ans()==1);
     assert(d.get_plays(2).status()==StatusType::SUCCESS);
@@ -416,10 +416,10 @@ void dspotify_test_4() {
     assert(d.get_num_songs(PLAYLIST_ID2).status()==StatusType::SUCCESS);
     assert(d.get_num_songs(1000).status()==StatusType::FAILURE);
     assert(d.get_num_songs(PLAYLIST_ID3).ans()==0);
-    d.add_to_playlist(PLAYLIST_ID2,5);
+    d.add_to_playlist(PLAYLIST_ID2, 5);
     assert(d.get_num_songs(PLAYLIST_ID2).ans()==1);
-
 }
+
 void dspotify_test_5() {
     DSpotify d;
     const int PLAYLIST_ID1 = 10;
@@ -428,16 +428,16 @@ void dspotify_test_5() {
     d.add_playlist(PLAYLIST_ID1);
     d.add_playlist(PLAYLIST_ID2);
     d.add_playlist(PLAYLIST_ID3);
-    d.add_song(1,1);
-    d.add_song(2,2);
-    d.add_song(3,3);
-    d.add_song(4,3);
-    d.add_song(5,3);
-    d.add_to_playlist(PLAYLIST_ID1,1);
-    d.add_to_playlist(PLAYLIST_ID1,2);
-    d.add_to_playlist(PLAYLIST_ID1,3);
-    d.add_to_playlist(PLAYLIST_ID1,4);
-    d.add_to_playlist(PLAYLIST_ID1,5);
+    d.add_song(1, 1);
+    d.add_song(2, 2);
+    d.add_song(3, 3);
+    d.add_song(4, 3);
+    d.add_song(5, 3);
+    d.add_to_playlist(PLAYLIST_ID1, 1);
+    d.add_to_playlist(PLAYLIST_ID1, 2);
+    d.add_to_playlist(PLAYLIST_ID1, 3);
+    d.add_to_playlist(PLAYLIST_ID1, 4);
+    d.add_to_playlist(PLAYLIST_ID1, 5);
     //checking get_by_plays functionality
     assert(d.get_by_plays(PLAYLIST_ID1,3).ans()==3);
     assert(d.get_by_plays(PLAYLIST_ID1,3).status()==StatusType::SUCCESS);
@@ -446,13 +446,12 @@ void dspotify_test_5() {
     assert(d.get_by_plays(PLAYLIST_ID1,2).ans()==2);
     assert(d.get_by_plays(0,3).status()==StatusType::INVALID_INPUT);
     assert(d.get_by_plays(PLAYLIST_ID1,-1).status()==StatusType::INVALID_INPUT);
-    d.add_song(6,4);
-    d.add_to_playlist(PLAYLIST_ID1,6);
+    d.add_song(6, 4);
+    d.add_to_playlist(PLAYLIST_ID1, 6);
     assert(d.get_by_plays(PLAYLIST_ID1,4).status()==StatusType::SUCCESS);
     assert(d.get_by_plays(PLAYLIST_ID1,4).ans()==6);
-
-
 }
+
 //this test checks remove_from_playlist
 void dspotify_test_6() {
     DSpotify d;
@@ -462,28 +461,29 @@ void dspotify_test_6() {
     d.add_playlist(PLAYLIST_ID1);
     d.add_playlist(PLAYLIST_ID2);
     d.add_playlist(PLAYLIST_ID3);
-    d.add_song(10,20);
-    d.add_song(11,21);
-    d.add_song(12,22);
-    d.add_song(13,22);
-    d.add_song(14,22);
-    d.add_song(15,23);
-    d.add_to_playlist(PLAYLIST_ID1,10);
-    d.add_to_playlist(PLAYLIST_ID2,11);
-    d.add_to_playlist(PLAYLIST_ID2,12);
-    d.add_to_playlist(PLAYLIST_ID2,13);
-    d.add_to_playlist(PLAYLIST_ID2,14);
-    d.add_to_playlist(PLAYLIST_ID3,15);
+    d.add_song(10, 20);
+    d.add_song(11, 21);
+    d.add_song(12, 22);
+    d.add_song(13, 22);
+    d.add_song(14, 22);
+    d.add_song(15, 23);
+    d.add_to_playlist(PLAYLIST_ID1, 10);
+    d.add_to_playlist(PLAYLIST_ID2, 11);
+    d.add_to_playlist(PLAYLIST_ID2, 12);
+    d.add_to_playlist(PLAYLIST_ID2, 13);
+    d.add_to_playlist(PLAYLIST_ID2, 14);
+    d.add_to_playlist(PLAYLIST_ID3, 15);
     assert(d.remove_from_playlist(PLAYLIST_ID1,10)==StatusType::SUCCESS);
     assert(d.get_num_songs(PLAYLIST_ID1).ans()==0);
     assert(d.delete_playlist(PLAYLIST_ID1)==StatusType::SUCCESS);
-    d.remove_from_playlist(PLAYLIST_ID2,11);
+    d.remove_from_playlist(PLAYLIST_ID2, 11);
     assert(d.get_num_songs(PLAYLIST_ID2).ans()==3);
     assert(d.remove_from_playlist(PLAYLIST_ID1,10)==StatusType::FAILURE);
     assert(d.remove_from_playlist(PLAYLIST_ID2,15)==StatusType::FAILURE);
     assert(d.remove_from_playlist(0,15)==StatusType::INVALID_INPUT);
     assert(d.remove_from_playlist(PLAYLIST_ID3,0)==StatusType::INVALID_INPUT);
 }
+
 //this test checks unite_playlists
 void dspotify_test_7() {
     DSpotify d;
@@ -495,34 +495,35 @@ void dspotify_test_7() {
     d.add_playlist(PLAYLIST_ID1);
     d.add_playlist(PLAYLIST_ID2);
     d.add_playlist(PLAYLIST_ID3);
-    d.add_song(10,20);
-    d.add_song(11,21);
-    d.add_song(12,22);
-    d.add_song(13,22);
-    d.add_song(14,22);
-    d.add_song(15,23);
-    d.add_to_playlist(PLAYLIST_ID1,10);
-    d.add_to_playlist(PLAYLIST_ID2,11);
-    d.add_to_playlist(PLAYLIST_ID2,12);
-    d.add_to_playlist(PLAYLIST_ID2,13);
-    d.add_to_playlist(PLAYLIST_ID2,14);
-    d.add_to_playlist(PLAYLIST_ID3,15);
+    d.add_song(10, 20);
+    d.add_song(11, 21);
+    d.add_song(12, 22);
+    d.add_song(13, 22);
+    d.add_song(14, 22);
+    d.add_song(15, 23);
+    d.add_to_playlist(PLAYLIST_ID1, 10);
+    d.add_to_playlist(PLAYLIST_ID2, 11);
+    d.add_to_playlist(PLAYLIST_ID2, 12);
+    d.add_to_playlist(PLAYLIST_ID2, 13);
+    d.add_to_playlist(PLAYLIST_ID2, 14);
+    d.add_to_playlist(PLAYLIST_ID3, 15);
     assert(d.unite_playlists(0,1)==StatusType::INVALID_INPUT);
     assert(d.unite_playlists(1,0)==StatusType::INVALID_INPUT);
-    assert(d.unite_playlists(400,PLAYLIST_ID1)==StatusType::FAILURE);//this playlist id doesn't exist so should return failure
-    assert(d.unite_playlists(PLAYLIST_ID1,400)==StatusType::FAILURE);//this playlist id doesn't exist so should return failure
+    assert(d.unite_playlists(400,PLAYLIST_ID1)==StatusType::FAILURE);
+    //this playlist id doesn't exist so should return failure
+    assert(d.unite_playlists(PLAYLIST_ID1,400)==StatusType::FAILURE);
+    //this playlist id doesn't exist so should return failure
     assert(d.unite_playlists(PLAYLIST_ID1,PLAYLIST_ID2)==StatusType::SUCCESS);
     assert(d.get_num_songs(PLAYLIST_ID1).ans()==5);
-    assert(d.get_num_songs(PLAYLIST_ID2).status()==StatusType::FAILURE);//playlist2 should be deleted from tree
-    assert(d.add_to_playlist(PLAYLIST_ID1,12)==StatusType::FAILURE);//song already in playlist because unite
+    assert(d.get_num_songs(PLAYLIST_ID2).status()==StatusType::FAILURE); //playlist2 should be deleted from tree
+    assert(d.add_to_playlist(PLAYLIST_ID1,12)==StatusType::FAILURE); //song already in playlist because unite
     //checking unite with empty playlist from both sides
     d.add_playlist(PLAYLIST_ID5);
     assert(d.unite_playlists(PLAYLIST_ID1,PLAYLIST_ID5)==StatusType::SUCCESS);
     assert(d.get_num_songs(PLAYLIST_ID1).ans()==5);
-    assert(d.get_num_songs(PLAYLIST_ID5).status()==StatusType::FAILURE);//playlist deleted so should return failure
+    assert(d.get_num_songs(PLAYLIST_ID5).status()==StatusType::FAILURE); //playlist deleted so should return failure
     d.add_playlist(PLAYLIST_ID6);
     assert(d.unite_playlists(PLAYLIST_ID6,PLAYLIST_ID1)==StatusType::SUCCESS);
     assert(d.get_num_songs(PLAYLIST_ID6).ans()==5);
-    assert(d.get_num_songs(PLAYLIST_ID1).status()==StatusType::FAILURE);//playlist deleted so should return failure
-
+    assert(d.get_num_songs(PLAYLIST_ID1).status()==StatusType::FAILURE); //playlist deleted so should return failure
 }

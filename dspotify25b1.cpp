@@ -99,7 +99,16 @@ StatusType DSpotify::delete_song(int songId) {
 }
 
 StatusType DSpotify::remove_from_playlist(int playlistId, int songId) {
-    return StatusType::FAILURE;
+    if (playlistId <= 0 || songId <= 0) {
+        return StatusType::INVALID_INPUT;
+    }
+    bool found;
+    auto playlist = playlistTree.search(playlistId, found);
+    if (!found || !playlist->isInPlaylist(songId)) {
+        return StatusType::FAILURE;
+    }
+    playlist->removeSong(songId);
+    return StatusType::SUCCESS;
 }
 
 output_t<int> DSpotify::get_plays(int songId) {
@@ -119,7 +128,7 @@ output_t<int> DSpotify::get_plays(int songId) {
 }
 
 output_t<int> DSpotify::get_num_songs(int playlistId) {
-    if(playlistId<=0) {
+    if (playlistId <= 0) {
         return StatusType::INVALID_INPUT;
     }
     try {
@@ -129,8 +138,7 @@ output_t<int> DSpotify::get_num_songs(int playlistId) {
             return res->getSize();
         }
         return StatusType::FAILURE;
-    }
-    catch(const std::bad_alloc& e) {
+    } catch (const std::bad_alloc &e) {
         return StatusType::ALLOCATION_ERROR;
     }
 }

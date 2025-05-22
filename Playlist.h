@@ -17,6 +17,10 @@ class Playlist {
     AVLTree<shared_ptr<Song>, int> songs;
     AVLTree<int, PlaysKey> playsTree;
 
+    void uniteSongs(AVLTree<shared_ptr<Song>, int> &songTree1, const AVLTree<shared_ptr<Song>, int> &songTree2);
+
+    void unitePlays(AVLTree<int, PlaysKey> &playsTree1, const AVLTree<int, PlaysKey> &playsTree2);
+
 public:
     explicit Playlist(int playlistId);
 
@@ -45,8 +49,4 @@ public:
     void releaseAllMemory();
 
     void mergeIntoThis(Playlist *other);
-
-    void uniteSongs(AVLTree<shared_ptr<Song>, int> &songTree1, const AVLTree<shared_ptr<Song>, int> &songTree2);
-
-    void unitePlays(AVLTree<int, PlaysKey> &playsTree1, const AVLTree<int, PlaysKey> &playsTree2);
 };
