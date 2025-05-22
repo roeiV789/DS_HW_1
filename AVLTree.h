@@ -70,7 +70,7 @@ private:
 
     auto rebalance(Node *node) -> Node *;
 
-    Node *createFromArrayAux(Node *curr, const Node *data, int begin, int end);
+    Node *recreateFromArrayAux(Node *curr, const Node *data, int begin, int end);
 
     auto findGreaterOrEqualAux(const K &key, Node *current, Node *closest) const -> Node *;
 
@@ -105,19 +105,19 @@ void AVLTree<T, K>::recreateFromArray(const Node *data, int size) {
         throw std::logic_error("this should not happen");
     deleteTree(root);
     this->n = size;
-    root = createFromArrayAux(root, data, 0, size - 1);
+    root = recreateFromArrayAux(root, data, 0, size - 1);
     delete[] data;
 }
 
 template<class T, class K>
-auto AVLTree<T, K>::createFromArrayAux(Node *curr, const Node *data, int begin, int end) -> Node * {
+auto AVLTree<T, K>::recreateFromArrayAux(Node *curr, const Node *data, int begin, int end) -> Node * {
     int mid = (begin + end) / 2;
     curr = new Node(data[mid].data, data[mid].key);
     if (begin < mid) {
-        curr->left = createFromArrayAux(curr->left, data, begin, mid - 1);
+        curr->left = recreateFromArrayAux(curr->left, data, begin, mid - 1);
     }
     if (mid < end) {
-        curr->right = createFromArrayAux(curr->right, data, mid + 1, end);
+        curr->right = recreateFromArrayAux(curr->right, data, mid + 1, end);
     }
     updateHeight(curr);
     return curr;
