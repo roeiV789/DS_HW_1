@@ -21,6 +21,7 @@ void run_unit_tests();
 
 int main() {
 #ifndef NDEBUG
+    std::remove("debug.txt");
     run_unit_tests();
 #endif
 

@@ -70,9 +70,7 @@ void Playlist::decreasePlaylistCount(SongNode *node) {
         return;
     }
     shared_ptr<Song> song = node->data;
-    if (song != nullptr) {
-        song->setPlaylistCount(song->getPlaylistCount() - 1);
-    }
+    song->setPlaylistCount(song->getPlaylistCount() - 1);
     decreasePlaylistCount(node->left);
     decreasePlaylistCount(node->right);
 }
@@ -106,6 +104,7 @@ void Playlist::uniteSongs(AVLTree<shared_ptr<Song>, int> &songTree1, const AVLTr
         size++;
     }
     songTree1.recreateFromArray(data, size);
+    delete[] data;
 }
 
 void Playlist::unitePlays(AVLTree<int, PlaysKey> &playsTree1, const AVLTree<int, PlaysKey> &playsTree2) {

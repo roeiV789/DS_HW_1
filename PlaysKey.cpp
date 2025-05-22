@@ -14,7 +14,7 @@ bool PlaysKey::operator<(const PlaysKey &other) const {
 }
 
 bool PlaysKey::operator>(const PlaysKey &other) const {
-    return !(other < *this) && !(*this == other);
+    return other < *this;
 }
 
 bool PlaysKey::operator==(const PlaysKey &other) const {

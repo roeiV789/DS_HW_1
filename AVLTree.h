@@ -56,6 +56,8 @@ public:
     T findGreaterOrEqual(const K &key, bool &found) const;
 
 private:
+    void updateHeightRecursively(Node *root);
+
     void updateHeight(Node *node);
 
     T searchAux(const Node *cur, const K &key, bool &found) const;
@@ -80,7 +82,8 @@ private:
 
 template<class T, class K>
 AVLTree<T, K>::Node::Node(): data(), key(), height(1), left(nullptr),
-      right(nullptr){}
+                             right(nullptr) {
+}
 
 template<class T, class K>
 AVLTree<T, K>::Node::Node(const T &data, const K &key)
@@ -110,6 +113,18 @@ void AVLTree<T, K>::recreateFromArray(const Node *data, int size) {
     deleteTree(root);
     this->n = size;
     root = recreateFromArrayAux(root, data, 0, size - 1);
+    updateHeightRecursively(root);
+    rebalance(root);
+}
+
+template<class T, class K>
+void AVLTree<T, K>::updateHeightRecursively(Node *node) {
+    if (node == nullptr) {
+        return;
+    }
+    updateHeightRecursively(node->left);
+    updateHeightRecursively(node->right);
+    updateHeight(node);
 }
 
 template<class T, class K>
@@ -122,7 +137,6 @@ auto AVLTree<T, K>::recreateFromArrayAux(Node *curr, const Node *data, int begin
     if (mid < end) {
         curr->right = recreateFromArrayAux(curr->right, data, mid + 1, end);
     }
-    updateHeight(curr);
     return curr;
 }
 

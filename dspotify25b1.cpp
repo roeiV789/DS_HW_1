@@ -2,6 +2,7 @@
 // However you need to implement all public DSpotify function, as provided below as a template
 
 #include "dspotify25b1.h"
+#include "debug.h"
 
 
 DSpotify::DSpotify() = default;
@@ -70,7 +71,7 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId) {
         return StatusType::FAILURE;
     }
     auto playlist = playlistTree.search(playlistId, found);
-    if(!found) {
+    if (!found) {
         return StatusType::FAILURE;
     }
     if (playlist->isInPlaylist(songId))
@@ -138,6 +139,7 @@ output_t<int> DSpotify::get_num_songs(int playlistId) {
         bool found;
         auto res = playlistTree.search(playlistId, found);
         if (found) {
+            print_playlist_contents(res, playlistId);
             return res->getSize();
         }
         return StatusType::FAILURE;
@@ -179,6 +181,8 @@ StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2) {
     if (!found)
         return StatusType::FAILURE;
     try {
+        print_playlist_contents(playlist1, playlistId1);
+        print_playlist_contents(playlist2, playlistId2);
         playlist1->mergeIntoThis(playlist2);
         delete_playlist(playlistId2);
     } catch (const std::bad_alloc &e) {
