@@ -66,8 +66,11 @@ StatusType DSpotify::add_to_playlist(int playlistId, int songId) {
 
     bool found;
     auto song = songTree.search(songId, found);
-    auto playlist = playlistTree.search(playlistId, found);
     if (!found) {
+        return StatusType::FAILURE;
+    }
+    auto playlist = playlistTree.search(playlistId, found);
+    if(!found) {
         return StatusType::FAILURE;
     }
     if (playlist->isInPlaylist(songId))

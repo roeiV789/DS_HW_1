@@ -13,7 +13,7 @@ public:
 
         Node(const T &data, const K &key);
 
-        Node() = default;
+        Node();
     };
 
     AVLTree();
@@ -79,6 +79,10 @@ private:
 };
 
 template<class T, class K>
+AVLTree<T, K>::Node::Node(): data(), key(), height(1), left(nullptr),
+      right(nullptr){}
+
+template<class T, class K>
 AVLTree<T, K>::Node::Node(const T &data, const K &key)
     : data(data), key(key), height(1), left(nullptr),
       right(nullptr) {
@@ -106,7 +110,6 @@ void AVLTree<T, K>::recreateFromArray(const Node *data, int size) {
     deleteTree(root);
     this->n = size;
     root = recreateFromArrayAux(root, data, 0, size - 1);
-    delete[] data;
 }
 
 template<class T, class K>
