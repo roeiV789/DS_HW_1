@@ -5,7 +5,9 @@ import argparse
 import subprocess
 
 
-COMPILATION_FLAGS ="-std=c++14 -DNDEBUG -Wall -g -O0"
+COMPILATION_FLAGS =("-std=c++14 "
+                    # "-DNDEBUG "
+                    "-Wall -g -O0")
 TIMEOUT = 10
 
 
@@ -63,7 +65,7 @@ def main():
     )
     args = parser.parse_args()
 
-    source_files = os.path.join(args.code_dir, "$(ls *.cpp | grep -v unit_tests.cpp)")
+    source_files = os.path.join(args.code_dir, "$(ls *.cpp)")
     exe_file = os.path.join(args.code_dir, "main.out")
     compilation_command = "g++ {} -o {} {}".format(COMPILATION_FLAGS, exe_file, source_files)
     if os.system(compilation_command) != 0:

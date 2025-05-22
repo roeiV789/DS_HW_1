@@ -2,26 +2,32 @@
 #pragma once
 
 #include <cassert>
+#include <fstream>
 #include <iostream>
 
 void print_playlist_contents(const Playlist *const playlist, int id) {
-    assert(playlist->getSongsTree().getSize() == playlist->getPlaysTree().getSize());
-    int n = playlist->getSongsTree().getSize();
-    std::cout << "DEBUG" << " contents of playlist " << id << ": " << std::endl;
+#ifndef NDEBUG
+    std::ofstream outfile("debug.txt", std::ios::app); // opens for writing, truncates if exists
+    if (playlist->getSongsTree().getSize() != playlist->getPlaysTree().getSize()) {
+        outfile << "WARNING " << "!!!tree sizes do not match for the playlist below!!!" << std::endl;
+    }
+    int n = max(playlist->getSongsTree().getSize(), playlist->getPlaysTree().getSize());
+    outfile << "DEBUG" << " contents of playlist " << id << ": " << std::endl;
     auto songArr = new SongNode[n];
     auto playsArr = new PlaysNode[n];
     playlist->getSongsTree().toArray(songArr);
     playlist->getPlaysTree().toArray(playsArr);
-    std::cout << "DEBUG" " songs: (songId) " << std::endl;
+    outfile << "DEBUG" " songs: (songId) " << std::endl;
     for (int i = 0; i < n; i++) {
-        std::cout << songArr[i].key << " ";
+        outfile << songArr[i].key << " ";
     }
-    std::cout << std::endl;
+    outfile << std::endl;
 
-    std::cout << "DEBUG" " plays: (plays, songId) " << std::endl;
+    outfile << "DEBUG" " plays: (plays, songId) " << std::endl;
     for (int i = 0; i < n; i++) {
-        std::cout << "(" << playsArr[i].key.getPlays() << ", "
-                << playsArr[i].key.getSongId() << ")";
+        outfile << "(" << playsArr[i].key.getPlays() << ", "
+                << playsArr[i].key.getSongId() << "), ";
     }
-    std::cout << std::endl;
+    outfile << std::endl;
+#endif
 }
