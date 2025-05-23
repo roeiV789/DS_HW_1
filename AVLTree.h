@@ -329,6 +329,10 @@ T AVLTree<T, K>::searchAux(const Node *cur, const K &key, bool &found) const {
 template<class T, class K>
 void AVLTree<T, K>::remove(const K &key) {
     if (root != nullptr) {
+        if (this->found(key)) {
+            // decrease node counter
+            --(this->n);
+        }
         root = removeAux(root, key);
     }
 }
@@ -339,8 +343,6 @@ auto AVLTree<T, K>::removeAux(Node *node, const K &key) -> Node * {
         return nullptr;
     }
     if (node->key == key) {
-        // decrease node counter
-        --(this->n);
         //leaf case
         if (!node->left && !node->right) {
             delete node;
