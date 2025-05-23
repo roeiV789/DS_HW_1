@@ -1,5 +1,4 @@
-
-
+import platform
 import os
 import argparse
 import subprocess
@@ -24,8 +23,10 @@ def run_test(exe_file, test_id, tests_dir):
         print(f"Expected output file for test {test_id} not found: {expected_output_file}")
         return
 
-    # Execute the compiled binary with a timeout
-    command = f"{exe_file}"
+    if platform.system() == "Darwin":
+        command = f"{exe_file}"
+    else:
+        command = f"valgrind --leak-check=full {exe_file}"
     try:
         with open(input_file, "r") as stdin, open(result_file, "w") as stdout:
             subprocess.run(command, stdin=stdin, stdout=stdout, timeout=TIMEOUT, shell=True, check=True)
