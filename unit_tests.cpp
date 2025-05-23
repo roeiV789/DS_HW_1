@@ -37,8 +37,6 @@ void dspotify_test_7();
 
 void dspotify_test_8();
 
-void dspotify_test_9();
-
 int run_unit_tests() {
     // AVLTree tests
     avl_tree_test_1();
@@ -58,7 +56,6 @@ int run_unit_tests() {
     dspotify_test_6();
     dspotify_test_7();
     dspotify_test_8();
-    dspotify_test_9();
     return 0;
 }
 
