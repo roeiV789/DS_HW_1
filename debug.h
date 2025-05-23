@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-void print_playlist_contents(const Playlist *const playlist, int id) {
+inline void print_playlist_contents(const Playlist *const playlist, int id) {
 #ifndef NDEBUG
     std::ofstream outfile("debug.txt", std::ios::app); // opens for writing, truncates if exists
     if (playlist->getSongsTree().getSize() != playlist->getPlaysTree().getSize()) {
