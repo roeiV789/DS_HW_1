@@ -69,14 +69,27 @@ int Playlist::get_song_by_plays(int plays) const {
     return found ? songId : -1;
 }
 
-void Playlist::decreasePlaylistCount(SongNode *node) {
-    if (node == nullptr) {
-        return;
+void Playlist::decreaseDuplicatePlaylistCount(const AVLTree<shared_ptr<Song>, int> &songTree1,
+                                              const AVLTree<shared_ptr<Song>, int> &songTree2) {
+    auto arr1 = new SongNode[songTree1.getSize()];
+    auto arr2 = new SongNode[songTree2.getSize()];
+    songTree1.toArray(arr1);
+    songTree1.toArray(arr2);
+    int i = 0, j = 0;
+    while (i < songTree1.getSize() && j < songTree2.getSize()) {
+        if (arr1[i].key < arr2[j].key) {
+            i++;
+        } else if (arr1[i].key > arr2[j].key) {
+            j++;
+        } else {
+            shared_ptr<Song> song = arr1[i].data;
+            song->setPlaylistCount(song->getPlaylistCount() - 1);
+            i++;
+            j++;
+        }
     }
-    shared_ptr<Song> song = node->data;
-    song->setPlaylistCount(song->getPlaylistCount() - 1);
-    decreasePlaylistCount(node->left);
-    decreasePlaylistCount(node->right);
+    delete[] arr1;
+    delete[] arr2;
 }
 
 void Playlist::releaseAllMemory() {
@@ -89,10 +102,10 @@ void Playlist::mergeIntoThis(Playlist *other) {
     if (other->size == 0) {
         return;
     }
+    decreaseDuplicatePlaylistCount(this->songs, other->songs);
     uniteSongs(this->songs, other->songs);
     unitePlays(this->playsTree, other->playsTree);
     this->size = this->songs.getSize();
-    other->decreasePlaylistCount(other->getSongsTree().getRoot());
     other->releaseAllMemory();
 }
 

@@ -44,7 +44,8 @@ public:
 
     int get_song_by_plays(int plays) const;
 
-    void decreasePlaylistCount(SongNode *song);
+    void decreaseDuplicatePlaylistCount(const AVLTree<shared_ptr<Song>, int> &songTree1,
+                                        const AVLTree<shared_ptr<Song>, int> &songTree2);
 
     void releaseAllMemory();
 
