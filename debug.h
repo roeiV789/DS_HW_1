@@ -27,6 +27,8 @@ inline void print_playlist_contents(const Playlist *const playlist, int id) {
         outfile << "(" << playsArr[i].key.getPlays() << ", "
                 << playsArr[i].key.getSongId() << "), ";
     }
+    delete[] playsArr;
+    delete[] songArr;
     outfile << std::endl;
     delete [] songArr;
     delete [] playsArr;

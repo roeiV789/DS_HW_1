@@ -236,7 +236,9 @@ void avl_tree_test_5() {
     assert(dest[4].key == 5);
     assert(dest[5].key == 6);
 
+
     tree1.recreateFromArray(dest, 6);
+    delete[] dest;
     int *arr1 = new int[6];
     tree1.toArray(arr1);
     assert(tree1.getSize() == 6);
@@ -246,6 +248,7 @@ void avl_tree_test_5() {
     assert(arr1[3] == 4);
     assert(arr1[4] == 5);
     assert(arr1[5] == 6);
+    delete[] arr1;
 }
 
 void avl_tree_test_6() {
@@ -267,7 +270,9 @@ void avl_tree_test_6() {
     assert(dest[3].key == 4);
     assert(dest[4].key == 5);
 
+
     tree1.recreateFromArray(dest, 5);
+    delete[] dest;
     int *arr1 = new int[5];
     tree1.toArray(arr1);
     assert(tree1.getSize() == 5);
@@ -276,6 +281,7 @@ void avl_tree_test_6() {
     assert(arr1[2] == 3);
     assert(arr1[3] == 4);
     assert(arr1[4] == 5);
+    delete[] arr1;
 }
 
 void avl_tree_test_7() {
@@ -300,6 +306,7 @@ void avl_tree_test_7() {
     assert(dest[4].key == 5);
 
     tree1.recreateFromArray(dest, 5);
+    delete[] dest;
     int *arr1 = new int[5];
     tree1.toArray(arr1);
     assert(tree1.getSize() == 5);
@@ -308,6 +315,7 @@ void avl_tree_test_7() {
     assert(arr1[2] == 3);
     assert(arr1[3] == 4);
     assert(arr1[4] == 5);
+    delete[] arr1;
 }
 
 void dspotify_test_1() {
