@@ -1,7 +1,5 @@
 #include "Playlist.h"
 
-#include "debug.h"
-
 Playlist::Playlist(int playlistId) : playlistId(playlistId), size(0) {
 }
 
@@ -23,7 +21,6 @@ void Playlist::setSize(int size) {
 }
 
 void Playlist::addSong(const shared_ptr<Song> &song) {
-    print_playlist_contents(this, this->playlistId);
     if (song) {
         int id = song->getSongId();
         songs.insert(song, id);
@@ -34,7 +31,6 @@ void Playlist::addSong(const shared_ptr<Song> &song) {
 }
 
 void Playlist::removeSong(int songId) {
-    print_playlist_contents(this, this->playlistId);
     bool found;
     shared_ptr<Song> song = songs.search(songId, found);
     if (found) {
