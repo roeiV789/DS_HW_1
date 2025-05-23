@@ -6,8 +6,8 @@ Playlist::Playlist(int playlistId) : playlistId(playlistId), size(0) {
 }
 
 Playlist::~Playlist() {
-    songs.deleteTree(songs.getRoot());
-    playsTree.deleteTree(playsTree.getRoot());
+    songs.deleteTree();
+    playsTree.deleteTree();
 }
 
 int Playlist::getPlaylistId() const {
@@ -93,12 +93,12 @@ void Playlist::decreaseDuplicatePlaylistCount(const AVLTree<shared_ptr<Song>, in
 }
 
 void Playlist::releaseAllMemory() {
-    songs.deleteTree(songs.getRoot());
-    playsTree.deleteTree(playsTree.getRoot());
+    songs.deleteTree();
+    playsTree.deleteTree();
     size = 0;
 }
 
-void Playlist::mergeIntoThis(Playlist *other) {
+void Playlist::mergeIntoThis(shared_ptr<Playlist> other) {
     if (other->size == 0) {
         return;
     }

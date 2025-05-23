@@ -16,6 +16,10 @@ public:
         Node();
     };
 
+    AVLTree(const AVLTree &) = delete;
+
+    AVLTree &operator=(const AVLTree &) = delete;
+
     AVLTree();
 
     void recreateFromArray(const Node *data_raw, int data_size);
@@ -30,7 +34,6 @@ public:
 
     void insert(const T &data, const K &key);
 
-    void deleteTree(Node *head);
 
     Node *rotateRight(Node *b);
 
@@ -55,8 +58,13 @@ public:
     //function returns the father of the node with the key or the last node that isnt null in the search route
     T findGreaterOrEqual(const K &key, bool &found) const;
 
+
+    void deleteTree();
+
 private:
-    void updateHeightRecursively(Node *root);
+    void updateHeightRecursively(Node *node);
+
+    void deleteTreeAux(Node *head);
 
     void updateHeight(Node *node);
 
@@ -110,7 +118,7 @@ template<class T, class K>
 void AVLTree<T, K>::recreateFromArray(const Node *data, int size) {
     if (data == nullptr || size <= 0)
         throw std::logic_error("this should not happen");
-    deleteTree(root);
+    deleteTree();
     this->n = size;
     root = recreateFromArrayAux(root, data, 0, size - 1);
     updateHeightRecursively(root);
@@ -142,7 +150,7 @@ auto AVLTree<T, K>::recreateFromArrayAux(Node *curr, const Node *data, int begin
 
 template<class T, class K>
 AVLTree<T, K>::~AVLTree() {
-    deleteTree(root);
+    deleteTree();
     root = nullptr;
 }
 
@@ -240,12 +248,24 @@ auto AVLTree<T, K>::rebalance(Node *node) -> Node * {
 }
 
 template<class T, class K>
-void AVLTree<T, K>::deleteTree(Node *head) {
+void AVLTree<T, K>::deleteTree() {
+    // make the function robust to being called multiple times
+    if (root == nullptr || n == 0) {
+        root = nullptr;
+        n = 0;
+        return;
+    }
+    n = 0;
+    deleteTreeAux(root);
+}
+
+template<class T, class K>
+void AVLTree<T, K>::deleteTreeAux(Node *head) {
     if (head == nullptr) {
         return;
     }
-    deleteTree(head->left);
-    deleteTree(head->right);
+    deleteTreeAux(head->left);
+    deleteTreeAux(head->right);
     head->left = nullptr;
     head->right = nullptr;
     delete head;

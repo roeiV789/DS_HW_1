@@ -49,5 +49,5 @@ public:
 
     void releaseAllMemory();
 
-    void mergeIntoThis(Playlist *other);
+    void mergeIntoThis(shared_ptr<Playlist> other);
 };

@@ -8,6 +8,8 @@
 DSpotify::DSpotify() = default;
 
 DSpotify::~DSpotify() {
+    songTree.deleteTree();
+    playlistTree.deleteTree();
 }
 
 StatusType DSpotify::add_playlist(int playlistId) {
@@ -16,8 +18,7 @@ StatusType DSpotify::add_playlist(int playlistId) {
     }
     try {
         if (!playlistTree.found(playlistId)) {
-            auto playlist = new Playlist(playlistId);
-            playlistTree.insert(playlist, playlistId);
+            playlistTree.insert(make_shared<Playlist>(playlistId), playlistId);
             return StatusType::SUCCESS;
         }
         return StatusType::FAILURE;
@@ -139,7 +140,7 @@ output_t<int> DSpotify::get_num_songs(int playlistId) {
         bool found;
         auto res = playlistTree.search(playlistId, found);
         if (found) {
-            print_playlist_contents(res, playlistId);
+            print_playlist_contents(res.get(), playlistId);
             return res->getSize();
         }
         return StatusType::FAILURE;
@@ -181,8 +182,8 @@ StatusType DSpotify::unite_playlists(int playlistId1, int playlistId2) {
     if (!found)
         return StatusType::FAILURE;
     try {
-        print_playlist_contents(playlist1, playlistId1);
-        print_playlist_contents(playlist2, playlistId2);
+        print_playlist_contents(playlist1.get(), playlistId1);
+        print_playlist_contents(playlist2.get(), playlistId2);
         playlist1->mergeIntoThis(playlist2);
         delete_playlist(playlistId2);
     } catch (const std::bad_alloc &e) {

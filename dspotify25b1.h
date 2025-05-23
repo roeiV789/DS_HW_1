@@ -18,7 +18,7 @@
 class DSpotify {
 private:
     AVLTree<shared_ptr<Song>, int> songTree;
-    AVLTree<Playlist *, int> playlistTree;
+    AVLTree<shared_ptr<Playlist>, int> playlistTree;
 public:
     // <DO-NOT-MODIFY> {
     DSpotify();
