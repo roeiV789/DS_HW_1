@@ -74,7 +74,7 @@ void Playlist::decreaseDuplicatePlaylistCount(const AVLTree<shared_ptr<Song>, in
     auto arr1 = new SongNode[songTree1.getSize()];
     auto arr2 = new SongNode[songTree2.getSize()];
     songTree1.toArray(arr1);
-    songTree1.toArray(arr2);
+    songTree2.toArray(arr2);
     int i = 0, j = 0;
     while (i < songTree1.getSize() && j < songTree2.getSize()) {
         if (arr1[i].key < arr2[j].key) {
