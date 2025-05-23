@@ -30,7 +30,5 @@ inline void print_playlist_contents(const Playlist *const playlist, int id) {
     delete[] playsArr;
     delete[] songArr;
     outfile << std::endl;
-    delete [] songArr;
-    delete [] playsArr;
 #endif
 }
