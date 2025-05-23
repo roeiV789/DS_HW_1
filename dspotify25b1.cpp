@@ -8,6 +8,8 @@
 DSpotify::DSpotify() = default;
 
 DSpotify::~DSpotify() {
+    songTree.deleteTree(songTree.getRoot());
+    playlistTree.deleteTree(playlistTree.getRoot());
 }
 
 StatusType DSpotify::add_playlist(int playlistId) {

@@ -6,8 +6,6 @@ Playlist::Playlist(int playlistId) : playlistId(playlistId), size(0) {
 }
 
 Playlist::~Playlist() {
-    songs.deleteTree(songs.getRoot());
-    playsTree.deleteTree(playsTree.getRoot());
 }
 
 int Playlist::getPlaylistId() const {

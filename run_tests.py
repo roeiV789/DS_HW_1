@@ -25,7 +25,7 @@ def run_test(exe_file, test_id, tests_dir):
         return
 
     # Execute the compiled binary with a timeout
-    command = f"{exe_file}"
+    command = f"valgrind --leak-check=full {exe_file}"
     try:
         with open(input_file, "r") as stdin, open(result_file, "w") as stdout:
             subprocess.run(command, stdin=stdin, stdout=stdout, timeout=TIMEOUT, shell=True, check=True)

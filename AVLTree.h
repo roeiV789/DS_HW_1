@@ -239,17 +239,17 @@ auto AVLTree<T, K>::rebalance(Node *node) -> Node * {
     return node;
 }
 
-template<class T, class K>
-void AVLTree<T, K>::deleteTree(Node *head) {
-    if (head == nullptr) {
-        return;
+    template<class T, class K>
+    void AVLTree<T, K>::deleteTree(Node *head) {
+        if (head == nullptr) {
+            return;
+        }
+        deleteTree(head->left);
+        deleteTree(head->right);
+        head->left = nullptr;
+        head->right = nullptr;
+        delete head;
     }
-    deleteTree(head->left);
-    deleteTree(head->right);
-    head->left = nullptr;
-    head->right = nullptr;
-    delete head;
-}
 
 template<class T, class K>
 typename AVLTree<T, K>::Node *AVLTree<T, K>::rotateRight(Node *b) {
